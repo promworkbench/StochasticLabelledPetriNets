@@ -1,10 +1,10 @@
-package org.processmining.newpackageivy.connections;
+package org.processmining.stochasticlabelledpetrinets.connections;
 
 import org.processmining.framework.connections.impl.AbstractConnection;
-import org.processmining.newpackageivy.models.YourFirstInput;
-import org.processmining.newpackageivy.models.YourOutput;
-import org.processmining.newpackageivy.models.YourSecondInput;
-import org.processmining.newpackageivy.parameters.YourParameters;
+import org.processmining.stochasticlabelledpetrinets.models.YourFirstInput;
+import org.processmining.stochasticlabelledpetrinets.models.YourOutput;
+import org.processmining.stochasticlabelledpetrinets.models.YourSecondInput;
+import org.processmining.stochasticlabelledpetrinets.parameters.YourParameters;
 
 public class YourConnection extends AbstractConnection {
 

@@ -1,10 +1,10 @@
-package org.processmining.newpackageivy.algorithms;
+package org.processmining.stochasticlabelledpetrinets.algorithms;
 
 import org.processmining.framework.plugin.PluginContext;
-import org.processmining.newpackageivy.models.YourFirstInput;
-import org.processmining.newpackageivy.models.YourOutput;
-import org.processmining.newpackageivy.models.YourSecondInput;
-import org.processmining.newpackageivy.parameters.YourParameters;
+import org.processmining.stochasticlabelledpetrinets.models.YourFirstInput;
+import org.processmining.stochasticlabelledpetrinets.models.YourOutput;
+import org.processmining.stochasticlabelledpetrinets.models.YourSecondInput;
+import org.processmining.stochasticlabelledpetrinets.parameters.YourParameters;
 
 public class YourAlgorithm {
 
