@@ -18,12 +18,19 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 	}
 
 	public void executeTransition(int transition) {
-		// TODO Auto-generated method stub
+		int[] inSet = net.getInputPlaces(transition);
+		for (int place : inSet) {
+			state[place]--;
+		}
 
+		int[] postSet = net.getOutputPlaces(transition);
+		for (int place : postSet) {
+			state[place]++;
+		}
 	}
 
 	public boolean[] getEnabledTransitions() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

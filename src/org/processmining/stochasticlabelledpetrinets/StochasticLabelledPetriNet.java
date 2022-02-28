@@ -40,4 +40,22 @@ public interface StochasticLabelledPetriNet {
 	 * @return the number of tokens on this place in the initial marking.
 	 */
 	public int isInInitialMarking(int place);
+
+	/**
+	 * 
+	 * @param transition
+	 * @return a list of places that have arcs to this transition. Arcs may
+	 *         appear multiple times. The caller must not change the returned
+	 *         array.
+	 */
+	public int[] getInputPlaces(int transition);
+
+	/**
+	 * 
+	 * @param transition
+	 * @return a list of places that have arcs from this transition. Arcs may
+	 *         appear multiple times. The caller must not change the returned
+	 *         array.
+	 */
+	public int[] getOutputPlaces(int transition);
 }
