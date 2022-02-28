@@ -1,9 +1,13 @@
 package org.processmining.stochasticlabelledpetrinets;
 
 public interface StochasticLabelledPetriNet {
-	public Iterable<Integer> getTransitions();
 
-	public int getNumberOfTransitions();
+	/**
+	 * 
+	 * @return the number of transitions. All transitions have indices starting
+	 *         at 0 and ending at the returned value (exclusive);
+	 */
+	public int getNumberOfPlaces();
 
 	public Iterable<Integer> getPlaces();
 
