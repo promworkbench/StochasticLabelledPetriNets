@@ -40,12 +40,12 @@ public interface StochasticLabelledPetriNetSemantics {
 
 	/**
 	 * 
-	 * @return the current state.
+	 * @return a copy of the current state.
 	 */
 	public byte[] getState();
 
 	/**
-	 * Set the state.
+	 * Set a copy of the given state.
 	 * 
 	 * @param state
 	 */

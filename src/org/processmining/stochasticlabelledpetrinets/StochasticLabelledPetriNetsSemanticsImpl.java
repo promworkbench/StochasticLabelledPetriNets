@@ -2,6 +2,8 @@ package org.processmining.stochasticlabelledpetrinets;
 
 import java.util.BitSet;
 
+import org.python.bouncycastle.util.Arrays;
+
 /**
  * This semantics aims to avoid traversing all transitions. After construction,
  * executing a transition will only consider the transitions whose enabledness
@@ -106,12 +108,12 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 	}
 
 	public byte[] getState() {
-		return state;
+		return Arrays.clone(state);
 	}
 
 	public void setState(byte[] newState) {
 		byte[] oldState = this.state;
-		this.state = newState;
+		this.state = Arrays.clone(newState);
 
 		cacheTransition.clear();
 
