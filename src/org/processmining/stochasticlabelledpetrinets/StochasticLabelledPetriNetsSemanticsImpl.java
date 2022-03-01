@@ -18,7 +18,7 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 	private final StochasticLabelledPetriNet net;
 	private byte[] state;
 	private byte[] cacheState;
-	private boolean[] enabledTransitions;
+	private BitSet enabledTransitions;
 	private BitSet cacheTransition;
 	private int numberOfEnabledTransitions;
 
@@ -27,6 +27,7 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 		state = new byte[net.getNumberOfPlaces()];
 		cacheState = new byte[net.getNumberOfPlaces()];
 		cacheTransition = new BitSet(net.getNumberOfTransitions());
+		enabledTransitions = new BitSet(net.getNumberOfTransitions());
 		setInitialState();
 	}
 
@@ -72,8 +73,8 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 		int[] inSet = net.getInputPlaces(transition);
 		for (int inPlace : inSet) {
 			if (cacheState[inPlace] == 0) {
-				if (enabledTransitions[transition]) {
-					enabledTransitions[transition] = false;
+				if (enabledTransitions.get(transition)) {
+					enabledTransitions.set(transition, false);
 					numberOfEnabledTransitions--;
 				}
 				return false;
@@ -82,8 +83,8 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 			}
 		}
 
-		if (!enabledTransitions[transition]) {
-			enabledTransitions[transition] = true;
+		if (!enabledTransitions.get(transition)) {
+			enabledTransitions.set(transition, true);
 			numberOfEnabledTransitions++;
 		}
 		return true;
@@ -96,7 +97,7 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 		}
 	}
 
-	public boolean[] getEnabledTransitions() {
+	public BitSet getEnabledTransitions() {
 		return enabledTransitions;
 	}
 

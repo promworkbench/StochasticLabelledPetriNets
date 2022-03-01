@@ -1,5 +1,7 @@
 package org.processmining.stochasticlabelledpetrinets;
 
+import java.util.BitSet;
+
 /**
  * Semantics may be implemented using a state machine, thus the underlying Petri
  * net might not be able to be changed.
@@ -28,7 +30,7 @@ public interface StochasticLabelledPetriNetSemantics {
 	 *         implementation might require that this array is not changed by
 	 *         the caller.
 	 */
-	public boolean[] getEnabledTransitions();
+	public BitSet getEnabledTransitions();
 
 	/**
 	 * 
