@@ -1,9 +1,11 @@
 package org.processmining.stochasticlabelledpetrinets;
 
+import java.util.BitSet;
+
 /**
  * This semantics aims to avoid traversing all transitions. After construction,
  * executing a transition will only consider the transitions whose enabledness
- * may have changed.
+ * may have changed. The only all-transition operation is BitSet.clear().
  * 
  * After construction, the semantics will only allocate local non-array
  * variables.
@@ -15,14 +17,16 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 
 	private final StochasticLabelledPetriNet net;
 	private byte[] state;
-	private byte[] cache;
+	private byte[] cacheState;
 	private boolean[] enabledTransitions;
+	private BitSet cacheTransition;
 	private int numberOfEnabledTransitions;
 
 	public StochasticLabelledPetriNetsSemanticsImpl(StochasticLabelledPetriNet net) {
 		this.net = net;
 		state = new byte[net.getNumberOfPlaces()];
-		cache = new byte[net.getNumberOfPlaces()];
+		cacheState = new byte[net.getNumberOfPlaces()];
+		cacheTransition = new BitSet(net.getNumberOfTransitions());
 		setInitialState();
 	}
 
@@ -63,18 +67,18 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 
 	private boolean computeEnabledTransition(int transition) {
 		//due to potential multiplicity of arcs, we have to keep track of how many tokens we would consume
-		System.arraycopy(state, 0, cache, 0, state.length);
+		System.arraycopy(state, 0, cacheState, 0, state.length);
 
 		int[] inSet = net.getInputPlaces(transition);
 		for (int inPlace : inSet) {
-			if (cache[inPlace] == 0) {
+			if (cacheState[inPlace] == 0) {
 				if (enabledTransitions[transition]) {
 					enabledTransitions[transition] = false;
 					numberOfEnabledTransitions--;
 				}
 				return false;
 			} else {
-				cache[inPlace]--;
+				cacheState[inPlace]--;
 			}
 		}
 
@@ -104,8 +108,28 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 		return state;
 	}
 
-	public void setState(byte[] state) {
-		this.state = state;
-		computeEnabledTransitions();
+	public void setState(byte[] newState) {
+		byte[] oldState = this.state;
+		this.state = newState;
+
+		cacheTransition.clear();
+
+		//walk through all places that have changed, and update the transition enabledness
+		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
+			if (oldState[place] != state[place]) {
+				for (int transition : net.getInputTransitions(place)) {
+					if (!cacheTransition.get(transition)) {
+						computeEnabledTransition(transition);
+						cacheTransition.set(transition);
+					}
+				}
+				for (int transition : net.getOutputTransitions(place)) {
+					if (!cacheTransition.get(transition)) {
+						computeEnabledTransition(transition);
+						cacheTransition.set(transition);
+					}
+				}
+			}
+		}
 	}
 }
