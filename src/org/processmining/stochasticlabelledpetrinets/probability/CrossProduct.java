@@ -9,6 +9,10 @@ import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsImpl;
 
+import gnu.trove.list.TDoubleList;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TDoubleArrayList;
+import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
@@ -53,16 +57,10 @@ public abstract class CrossProduct<B> {
 	}
 
 	private class Y {
-		int[] outgoingStates;
-		double[] outgoingStateProbabilities;
-		int outgoingStateCounter;
+		TIntList outgoingStates = new TIntArrayList();
+		TDoubleList outgoingStateProbabilities = new TDoubleArrayList();
 	}
 
-	/**
-	 * This method is not thread safe.
-	 * 
-	 * @param net
-	 */
 	public void traverse(StochasticLabelledPetriNet net) {
 		Z z = new Z();
 		Y y = new Y();
@@ -90,9 +88,8 @@ public abstract class CrossProduct<B> {
 				BitSet enabledTransitions = z.semantics.getEnabledTransitions();
 				double totalWeight = z.semantics.getTotalWeightOfEnabledTransitions();
 
-				y.outgoingStates = new int[enabledTransitions.cardinality()];
-				y.outgoingStateProbabilities = new double[y.outgoingStates.length];
-				y.outgoingStateCounter = 0;
+				y.outgoingStates.clear();
+				y.outgoingStateProbabilities.clear();
 
 				for (int transition = enabledTransitions.nextSetBit(0); transition >= 0; transition = enabledTransitions
 						.nextSetBit(transition + 1)) {
@@ -104,7 +101,7 @@ public abstract class CrossProduct<B> {
 						//silent transition; only A takes a step
 						B newStateB = stateAB.stateB;
 
-						processBstate(net, z, y, totalWeight, transition, newStateA, newStateB);
+						processNewState(net, z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B take steps
 						B[] newStatesB = takeStep(stateAB.stateB, net.getTransitionLabel(transition));
@@ -113,7 +110,7 @@ public abstract class CrossProduct<B> {
 						}
 
 						for (B newStateB : newStatesB) {
-							processBstate(net, z, y, totalWeight, transition, newStateA, newStateB);
+							processNewState(net, z, y, totalWeight, transition, newStateA, newStateB);
 						}
 					}
 				}
@@ -123,7 +120,7 @@ public abstract class CrossProduct<B> {
 		}
 	}
 
-	private void processBstate(StochasticLabelledPetriNet net, Z z, Y y, double totalWeight, int transition,
+	private void processNewState(StochasticLabelledPetriNet net, Z z, Y y, double totalWeight, int transition,
 			byte[] newStateA, B newStateB) {
 		ABState<B> newStateAB = new ABState<B>(newStateA, newStateB);
 		int newStateIndex = z.seen.adjustOrPutValue(newStateAB, 0, z.stateCounter);
@@ -133,9 +130,8 @@ public abstract class CrossProduct<B> {
 			z.worklist.add(newStateAB);
 		}
 
-		y.outgoingStates[y.outgoingStateCounter] = newStateIndex;
-		y.outgoingStateProbabilities[y.outgoingStateCounter] = net.getTransitionWeight(transition) / totalWeight;
-		y.outgoingStateCounter++;
+		y.outgoingStates.add(newStateIndex);
+		y.outgoingStateProbabilities.add(net.getTransitionWeight(transition) / totalWeight);
 	}
 
 	public abstract void reportFinalState(int stateIndex);
@@ -144,10 +140,12 @@ public abstract class CrossProduct<B> {
 	 * 
 	 * @param stateIndex
 	 * @param nextStateIndexes
-	 *            may contain double values.
+	 *            may contain double values. List might be reused and changed
+	 *            after this call returns.
 	 * @param probabilities
+	 *            list might be reused and changed after this call returns.
 	 */
-	public abstract void reportNonFinalState(int stateIndex, int[] nextStateIndexes, double[] probabilities);
+	public abstract void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList probabilities);
 
 	/**
 	 * 
