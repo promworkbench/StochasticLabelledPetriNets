@@ -1,4 +1,4 @@
-package org.processmining.stochasticlabelledpetrinets.automaton;
+package org.processmining.stochasticlabelledpetrinets.probability;
 
 import org.processmining.ltl2automaton.plugins.automaton.State;
 

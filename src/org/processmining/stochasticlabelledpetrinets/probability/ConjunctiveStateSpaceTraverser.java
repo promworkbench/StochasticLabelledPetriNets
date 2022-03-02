@@ -1,4 +1,4 @@
-package org.processmining.stochasticlabelledpetrinets.automaton;
+package org.processmining.stochasticlabelledpetrinets.probability;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
