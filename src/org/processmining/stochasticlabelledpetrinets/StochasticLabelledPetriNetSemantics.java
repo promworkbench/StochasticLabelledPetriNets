@@ -50,4 +50,11 @@ public interface StochasticLabelledPetriNetSemantics {
 	 * @param state
 	 */
 	public void setState(byte[] state);
+
+	/**
+	 * 
+	 * @param enabledTransitions
+	 * @return the sum of the weight of the enabled transitions
+	 */
+	public double getTotalWeightOfEnabledTransitions();
 }

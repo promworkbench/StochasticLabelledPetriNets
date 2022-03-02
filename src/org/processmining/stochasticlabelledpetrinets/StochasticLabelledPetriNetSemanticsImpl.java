@@ -15,7 +15,7 @@ import org.python.bouncycastle.util.Arrays;
  * @author sander
  *
  */
-public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabelledPetriNetSemantics {
+public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
 
 	private final StochasticLabelledPetriNet net;
 	private byte[] state;
@@ -24,7 +24,7 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 	private BitSet cacheTransition;
 	private int numberOfEnabledTransitions;
 
-	public StochasticLabelledPetriNetsSemanticsImpl(StochasticLabelledPetriNet net) {
+	public StochasticLabelledPetriNetSemanticsImpl(StochasticLabelledPetriNet net) {
 		this.net = net;
 		state = new byte[net.getNumberOfPlaces()];
 		cacheState = new byte[net.getNumberOfPlaces()];
@@ -105,6 +105,15 @@ public class StochasticLabelledPetriNetsSemanticsImpl implements StochasticLabel
 
 	public boolean isFinalState() {
 		return numberOfEnabledTransitions == 0;
+	}
+
+	public double getTotalWeightOfEnabledTransitions() {
+		double result = 0;
+		for (int transition = enabledTransitions.nextSetBit(0); transition >= 0; transition = enabledTransitions
+				.nextSetBit(transition + 1)) {
+			result += net.getTransitionWeight(transition);
+		}
+		return result;
 	}
 
 	public byte[] getState() {
