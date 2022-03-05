@@ -10,10 +10,10 @@ public interface CrossProductResult {
 	 * 
 	 * @param stateIndex
 	 * @param nextStateIndexes
-	 *            may contain double values. List might be reused and changed
-	 *            after this call returns.
-	 * @param probabilities
+	 *            may contain duplicated values. List might be reused and
+	 *            changed after this call returns.
+	 * @param nextStateProbabilities
 	 *            list might be reused and changed after this call returns.
 	 */
-	public void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList probabilities);
+	public void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList nextStateProbabilities);
 }
