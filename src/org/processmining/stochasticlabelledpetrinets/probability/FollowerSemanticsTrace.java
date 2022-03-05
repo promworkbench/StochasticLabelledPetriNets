@@ -1,10 +1,10 @@
 package org.processmining.stochasticlabelledpetrinets.probability;
 
-public abstract class CrossProductTrace extends CrossProduct<Integer> {
+public abstract class FollowerSemanticsTrace implements FollowerSemantics<Integer> {
 
 	private final String[] trace;
 
-	public CrossProductTrace(String[] trace) {
+	public FollowerSemanticsTrace(String[] trace) {
 		this.trace = trace;
 	}
 
