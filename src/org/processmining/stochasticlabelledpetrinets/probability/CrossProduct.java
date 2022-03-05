@@ -16,7 +16,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
-public abstract class CrossProduct<B> {
+public abstract class CrossProduct {
 
 	protected static class ABState<B> {
 
@@ -49,26 +49,27 @@ public abstract class CrossProduct<B> {
 		}
 	}
 
-	private class Z {
+	private static class Z<B> {
 		int stateCounter = 0;
 		StochasticLabelledPetriNetSemantics semantics;
 		TObjectIntMap<ABState<B>> seen = new TObjectIntHashMap<>(10, 0.5f, -1);
 		ArrayDeque<ABState<B>> worklist = new ArrayDeque<>();
 	}
 
-	private class Y {
+	private static class Y {
 		TIntList outgoingStates = new TIntArrayList();
 		TDoubleList outgoingStateProbabilities = new TDoubleArrayList();
 	}
 
-	public void traverse(StochasticLabelledPetriNet net) {
-		Z z = new Z();
+	public static <B> void traverse(StochasticLabelledPetriNet netA, FollowerSemantics<B> netB,
+			CrossProductResult result) {
+		Z<B> z = new Z<>();
 		Y y = new Y();
-		z.semantics = new StochasticLabelledPetriNetSemanticsImpl(net);
+		z.semantics = new StochasticLabelledPetriNetSemanticsImpl(netA);
 
 		//initialise
 		{
-			ABState<B> state = new ABState<>(z.semantics.getState(), getInitialState());
+			ABState<B> state = new ABState<>(z.semantics.getState(), netB.getInitialState());
 			z.worklist.add(state);
 			z.seen.put(state, z.stateCounter);
 			z.stateCounter++;
@@ -81,8 +82,8 @@ public abstract class CrossProduct<B> {
 			z.semantics.setState(stateAB.stateA);
 
 			if (z.semantics.isFinalState()) {
-				if (isFinalState(stateAB.stateB)) {
-					reportFinalState(stateABindex);
+				if (netB.isFinalState(stateAB.stateB)) {
+					result.reportFinalState(stateABindex);
 				}
 			} else {
 				BitSet enabledTransitions = z.semantics.getEnabledTransitions();
@@ -97,31 +98,31 @@ public abstract class CrossProduct<B> {
 					z.semantics.setState(stateAB.stateA);
 					z.semantics.executeTransition(transition);
 					byte[] newStateA = z.semantics.getState();
-					if (net.isTransitionSilent(transition)) {
+					if (netA.isTransitionSilent(transition)) {
 						//silent transition; only A takes a step
 						B newStateB = stateAB.stateB;
 
-						processNewState(net, z, y, totalWeight, transition, newStateA, newStateB);
+						processNewState(netA, z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B take steps
-						B[] newStatesB = takeStep(stateAB.stateB, net.getTransitionLabel(transition));
+						B[] newStatesB = netB.takeStep(stateAB.stateB, netA.getTransitionLabel(transition));
 						if (newStatesB == null || newStatesB.length == 0) {
 							continue;
 						}
 
 						for (B newStateB : newStatesB) {
-							processNewState(net, z, y, totalWeight, transition, newStateA, newStateB);
+							processNewState(netA, z, y, totalWeight, transition, newStateA, newStateB);
 						}
 					}
 				}
 
-				reportNonFinalState(stateABindex, y.outgoingStates, y.outgoingStateProbabilities);
+				result.reportNonFinalState(stateABindex, y.outgoingStates, y.outgoingStateProbabilities);
 			}
 		}
 	}
 
-	private void processNewState(StochasticLabelledPetriNet net, Z z, Y y, double totalWeight, int transition,
-			byte[] newStateA, B newStateB) {
+	private static <B> void processNewState(StochasticLabelledPetriNet net, Z<B> z, Y y, double totalWeight,
+			int transition, byte[] newStateA, B newStateB) {
 		ABState<B> newStateAB = new ABState<B>(newStateA, newStateB);
 		int newStateIndex = z.seen.adjustOrPutValue(newStateAB, 0, z.stateCounter);
 		if (newStateIndex == z.stateCounter) {
@@ -134,31 +135,4 @@ public abstract class CrossProduct<B> {
 		y.outgoingStateProbabilities.add(net.getTransitionWeight(transition) / totalWeight);
 	}
 
-	public abstract void reportFinalState(int stateIndex);
-
-	/**
-	 * 
-	 * @param stateIndex
-	 * @param nextStateIndexes
-	 *            may contain double values. List might be reused and changed
-	 *            after this call returns.
-	 * @param probabilities
-	 *            list might be reused and changed after this call returns.
-	 */
-	public abstract void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList probabilities);
-
-	/**
-	 * 
-	 * @return The initial state.
-	 */
-	public abstract B getInitialState();
-
-	/**
-	 * 
-	 * @param label
-	 * @return The new states [may be empty or null].
-	 */
-	public abstract B[] takeStep(B state, String label);
-
-	public abstract boolean isFinalState(B state);
 }
