@@ -16,7 +16,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gnu.trove.map.TObjectIntMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 
-public abstract class CrossProduct {
+public class CrossProduct {
 
 	protected static class ABState<B> {
 
@@ -72,6 +72,7 @@ public abstract class CrossProduct {
 			ABState<B> state = new ABState<>(z.semantics.getState(), netB.getInitialState());
 			z.worklist.add(state);
 			z.seen.put(state, z.stateCounter);
+			result.reportInitialState(z.stateCounter);
 			z.stateCounter++;
 		}
 
@@ -134,5 +135,4 @@ public abstract class CrossProduct {
 		y.outgoingStates.add(newStateIndex);
 		y.outgoingStateProbabilities.add(net.getTransitionWeight(transition) / totalWeight);
 	}
-
 }

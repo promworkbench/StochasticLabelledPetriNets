@@ -21,14 +21,22 @@ public class CrossProductResultDot implements CrossProductResult {
 	}
 
 	public void reportFinalState(int stateIndex) {
-		// TODO Auto-generated method stub
+		DotNode dotNode = index2dotNode.get(stateIndex);
+		if (dotNode == null) {
+			dotNode = dot.addNode(stateIndex + "");
+			allNodes(dotNode);
+			index2dotNode.put(stateIndex, dotNode);
+		}
 
+		dotNode.setOption("style", "filled");
+		dotNode.setOption("fillcolor", "#80ff00");
 	}
 
 	public void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList nextStateProbabilities) {
 		DotNode source = index2dotNode.get(stateIndex);
 		if (source == null) {
 			source = dot.addNode(stateIndex + "");
+			allNodes(source);
 			index2dotNode.put(stateIndex, source);
 		}
 
@@ -41,10 +49,27 @@ public class CrossProductResultDot implements CrossProductResult {
 			DotNode target = index2dotNode.get(targetIndex);
 			if (target == null) {
 				target = dot.addNode(targetIndex + "");
+				allNodes(target);
 				index2dotNode.put(targetIndex, target);
 			}
 
 			dot.addEdge(source, target, targetProbability + "");
 		}
+	}
+
+	public void reportInitialState(int stateIndex) {
+		DotNode dotNode = index2dotNode.get(stateIndex);
+		if (dotNode == null) {
+			dotNode = dot.addNode(stateIndex + "");
+			index2dotNode.put(stateIndex, dotNode);
+		}
+
+		allNodes(dotNode);
+		dotNode.setOption("style", "filled");
+		dotNode.setOption("fillcolor", "#E40000");
+	}
+
+	private static void allNodes(DotNode dotNode) {
+		dotNode.setOption("shape", "circle");
 	}
 }
