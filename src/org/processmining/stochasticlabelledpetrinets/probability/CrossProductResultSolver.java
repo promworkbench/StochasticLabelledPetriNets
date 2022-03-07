@@ -3,6 +3,8 @@ package org.processmining.stochasticlabelledpetrinets.probability;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.processmining.framework.plugin.ProMCanceller;
+
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
@@ -83,7 +85,7 @@ public class CrossProductResultSolver implements CrossProductResult {
 	 * @return
 	 * @throws LpSolveException
 	 */
-	public double solve() throws LpSolveException {
+	public double solve(ProMCanceller canceller) throws LpSolveException {
 		LpSolve solver = LpSolve.makeLp(maxState, maxState);
 
 		solver.setDebug(false);
@@ -94,9 +96,19 @@ public class CrossProductResultSolver implements CrossProductResult {
 		for (int stateIndex = 0; stateIndex < nextStates.size(); stateIndex++) {
 			solver.setRowex(stateIndex, nextStates.get(stateIndex).length, nextStateProbabilities.get(stateIndex),
 					nextStates.get(stateIndex));
+
+			if (canceller.isCancelled()) {
+				return Double.NaN;
+			}
 		}
 
 		solver.setAddRowmode(false);
+
+		if (canceller.isCancelled()) {
+			return Double.NaN;
+		}
+
+		solver.solve();
 	}
 
 }

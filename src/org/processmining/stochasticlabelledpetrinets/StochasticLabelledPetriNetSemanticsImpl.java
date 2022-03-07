@@ -62,7 +62,7 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 			state[place]++;
 
 			//update the enabled transitions; some transitions might be enabled by this execution
-			for (int transitionT : net.getInputTransitions(place)) {
+			for (int transitionT : net.getOutputTransitions(place)) {
 				computeEnabledTransition(transitionT);
 			}
 		}
@@ -143,5 +143,17 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 				}
 			}
 		}
+	}
+
+	public double getTransitionWeight(int transition) {
+		return net.getTransitionWeight(transition);
+	}
+
+	public boolean isTransitionSilent(int transition) {
+		return net.isTransitionSilent(transition);
+	}
+
+	public String getTransitionLabel(int transition) {
+		return net.getTransitionLabel(transition);
 	}
 }

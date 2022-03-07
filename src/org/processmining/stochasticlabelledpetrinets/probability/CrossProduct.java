@@ -99,20 +99,20 @@ public class CrossProduct {
 					z.semantics.setState(stateAB.stateA);
 					z.semantics.executeTransition(transition);
 					byte[] newStateA = z.semantics.getState();
-					if (netA.isTransitionSilent(transition)) {
+					if (z.semantics.isTransitionSilent(transition)) {
 						//silent transition; only A takes a step
 						B newStateB = stateAB.stateB;
 
-						processNewState(netA, z, y, totalWeight, transition, newStateA, newStateB);
+						processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B take steps
-						B[] newStatesB = netB.takeStep(stateAB.stateB, netA.getTransitionLabel(transition));
+						B[] newStatesB = netB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
 						if (newStatesB == null || newStatesB.length == 0) {
 							continue;
 						}
 
 						for (B newStateB : newStatesB) {
-							processNewState(netA, z, y, totalWeight, transition, newStateA, newStateB);
+							processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 						}
 					}
 				}
@@ -122,8 +122,8 @@ public class CrossProduct {
 		}
 	}
 
-	private static <B> void processNewState(StochasticLabelledPetriNet net, Z<B> z, Y y, double totalWeight,
-			int transition, byte[] newStateA, B newStateB) {
+	private static <B> void processNewState(Z<B> z, Y y, double totalWeight, int transition, byte[] newStateA,
+			B newStateB) {
 		ABState<B> newStateAB = new ABState<B>(newStateA, newStateB);
 		int newStateIndex = z.seen.adjustOrPutValue(newStateAB, 0, z.stateCounter);
 		if (newStateIndex == z.stateCounter) {
@@ -133,6 +133,6 @@ public class CrossProduct {
 		}
 
 		y.outgoingStates.add(newStateIndex);
-		y.outgoingStateProbabilities.add(net.getTransitionWeight(transition) / totalWeight);
+		y.outgoingStateProbabilities.add(z.semantics.getTransitionWeight(transition) / totalWeight);
 	}
 }
