@@ -9,7 +9,7 @@ public abstract class FollowerSemanticsLTL implements FollowerSemantics<State> {
 		return null;
 	}
 
-	public State[] takeStep(State state, String label) {
+	public State takeStep(State state, String label) {
 		// TODO Auto-generated method stub
 		return null;
 	}

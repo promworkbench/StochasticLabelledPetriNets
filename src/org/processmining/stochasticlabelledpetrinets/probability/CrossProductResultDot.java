@@ -32,6 +32,18 @@ public class CrossProductResultDot implements CrossProductResult {
 		dotNode.setOption("fillcolor", "#80ff00");
 	}
 
+	public void reportDeadState(int stateIndex) {
+		DotNode dotNode = index2dotNode.get(stateIndex);
+		if (dotNode == null) {
+			dotNode = dot.addNode(stateIndex + "");
+			allNodes(dotNode);
+			index2dotNode.put(stateIndex, dotNode);
+		}
+
+		dotNode.setOption("style", "filled");
+		dotNode.setOption("fillcolor", "blue");
+	}
+
 	public void reportNonFinalState(int stateIndex, TIntList nextStateIndexes, TDoubleList nextStateProbabilities) {
 		DotNode source = index2dotNode.get(stateIndex);
 		if (source == null) {

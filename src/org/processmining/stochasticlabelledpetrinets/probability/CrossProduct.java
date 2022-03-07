@@ -76,6 +76,10 @@ public class CrossProduct {
 			z.stateCounter++;
 		}
 
+		int deadStateA = z.stateCounter;
+		z.stateCounter++;
+		result.reportDeadState(deadStateA);
+
 		while (!z.worklist.isEmpty()) {
 			ABState<B> stateAB = z.worklist.pop();
 			int stateABindex = z.seen.get(stateAB);
@@ -106,13 +110,13 @@ public class CrossProduct {
 						processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B take steps
-						B[] newStatesB = netB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
-						if (newStatesB == null || newStatesB.length == 0) {
-							continue;
-						}
-
-						for (B newStateB : newStatesB) {
+						B newStateB = netB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
+						if (newStateB != null) {
 							processNewState(z, y, totalWeight, transition, newStateA, newStateB);
+						} else {
+							//dead state
+							y.outgoingStates.add(deadStateA);
+							y.outgoingStateProbabilities.add(z.semantics.getTransitionWeight(transition) / totalWeight);
 						}
 					}
 				}

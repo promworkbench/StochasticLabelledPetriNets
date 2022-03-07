@@ -10,9 +10,9 @@ public interface FollowerSemantics<B> {
 	/**
 	 * 
 	 * @param label
-	 * @return The new states [may be empty or null].
+	 * @return The new state, or null if the step cannot be taken.
 	 */
-	public abstract B[] takeStep(B state, String label);
+	public abstract B takeStep(B state, String label);
 
 	public abstract boolean isFinalState(B state);
 }

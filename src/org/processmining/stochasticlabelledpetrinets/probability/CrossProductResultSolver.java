@@ -3,11 +3,11 @@ package org.processmining.stochasticlabelledpetrinets.probability;
 import java.util.ArrayList;
 import java.util.BitSet;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.processmining.framework.plugin.ProMCanceller;
 
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
-import gnu.trove.list.array.TIntArrayList;
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
 
@@ -19,7 +19,8 @@ public class CrossProductResultSolver implements CrossProductResult {
 	}
 
 	private int initialState;
-	private TIntList finalStates;
+	private int deadState;
+	private BitSet finalStates;
 	private int maxState;
 	private ArrayList<int[]> nextStates;
 	private ArrayList<double[]> nextStateProbabilities;
@@ -28,8 +29,9 @@ public class CrossProductResultSolver implements CrossProductResult {
 
 	public CrossProductResultSolver() {
 		initialState = -1;
+		deadState = -1;
 		maxState = -1;
-		finalStates = new TIntArrayList();
+		finalStates = new BitSet();
 	}
 
 	public void reportInitialState(int stateIndex) {
@@ -50,8 +52,12 @@ public class CrossProductResultSolver implements CrossProductResult {
 	}
 
 	public void reportFinalState(int stateIndex) {
-		finalStates.add(stateIndex);
+		finalStates.set(stateIndex);
 		maxState = Math.max(maxState, stateIndex);
+	}
+
+	public void reportDeadState(int stateIndex) {
+		this.deadState = stateIndex;
 	}
 
 	private void deDuplicate(TIntList nextStateIndexes, TDoubleList nextStateProbabilities) {
@@ -86,16 +92,33 @@ public class CrossProductResultSolver implements CrossProductResult {
 	 * @throws LpSolveException
 	 */
 	public double solve(ProMCanceller canceller) throws LpSolveException {
-		LpSolve solver = LpSolve.makeLp(maxState, maxState);
+		LpSolve solver = LpSolve.makeLp(0, maxState);
 
 		solver.setDebug(false);
 		solver.setVerbose(0);
 
+		solver.setObj(initialState, -1);
+
 		solver.setAddRowmode(true);
 
 		for (int stateIndex = 0; stateIndex < nextStates.size(); stateIndex++) {
-			solver.setRowex(stateIndex, nextStates.get(stateIndex).length, nextStateProbabilities.get(stateIndex),
-					nextStates.get(stateIndex));
+
+			if (stateIndex == deadState) {
+				//a dead state has a 0 probability to end up in a final state
+				int[] columns = new int[] { deadState };
+				double[] probabilities = new double[] { 1 };
+				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 0);
+			} else if (finalStates.get(stateIndex)) {
+				//a final state has a 1 probability to end up in a final state
+				int[] columns = new int[] { stateIndex };
+				double[] probabilities = new double[] { 1 };
+				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 1.0);
+			} else {
+				//any other state has a probability equal to the weighted sum of its next states, to end up in a final state
+				int[] columns = ArrayUtils.add(nextStates.get(stateIndex), stateIndex);
+				double[] probabilities = ArrayUtils.add(nextStateProbabilities.get(stateIndex), -1);
+				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 0);
+			}
 
 			if (canceller.isCancelled()) {
 				return Double.NaN;
@@ -109,6 +132,8 @@ public class CrossProductResultSolver implements CrossProductResult {
 		}
 
 		solver.solve();
+
+		return solver.getObjective();
 	}
 
 }

@@ -12,9 +12,9 @@ public abstract class FollowerSemanticsTrace implements FollowerSemantics<Intege
 		return 0;
 	}
 
-	public Integer[] takeStep(Integer state, String label) {
+	public Integer takeStep(Integer state, String label) {
 		if (trace[state].equals(label)) {
-			return new Integer[] { state + 1 };
+			return state + 1;
 		}
 		return null;
 	}
