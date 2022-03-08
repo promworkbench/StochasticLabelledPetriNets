@@ -15,9 +15,14 @@ public class StochasticLabelledPetriNet2Dot {
 		TIntObjectMap<DotNode> transition2dotNode = new TIntObjectHashMap<>(10, 0.5f, -1);
 
 		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
-			DotNode dotNode = dot.addNode("" + place);
+			DotNode dotNode = dot.addNode("(" + place + ")");
 			dotNode.setOption("shape", "circle");
 			place2dotNode.put(place, dotNode);
+
+			if (net.isInInitialMarking(place) > 0) {
+				dotNode.setOption("style", "filled");
+				dotNode.setOption("fillcolor", "#80ff00");
+			}
 		}
 
 		for (int transition = 0; transition < net.getNumberOfTransitions(); transition++) {
@@ -25,9 +30,11 @@ public class StochasticLabelledPetriNet2Dot {
 
 			if (net.isTransitionSilent(transition)) {
 				dotNode = dot.addNode("" + net.getTransitionWeight(transition) + " (" + transition + ")");
+				dotNode.setOption("style", "filled");
+				dotNode.setOption("fillcolor", "gray");
 			} else {
-				dotNode = dot.addNode(net.getTransitionLabel(transition) + " (" + transition + ")\\n"
-						+ net.getTransitionWeight(transition));
+				dotNode = dot.addNode(net.getTransitionLabel(transition) + "\\n" + net.getTransitionWeight(transition)
+						+ " (" + transition + ")");
 			}
 
 			dotNode.setOption("shape", "box");
