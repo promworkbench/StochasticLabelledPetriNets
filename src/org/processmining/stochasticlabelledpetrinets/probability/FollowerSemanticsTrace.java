@@ -1,6 +1,6 @@
 package org.processmining.stochasticlabelledpetrinets.probability;
 
-public abstract class FollowerSemanticsTrace implements FollowerSemantics<Integer> {
+public class FollowerSemanticsTrace implements FollowerSemantics<Integer> {
 
 	private final String[] trace;
 

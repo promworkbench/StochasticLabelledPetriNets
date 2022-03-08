@@ -18,6 +18,10 @@ import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetI
 public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin {
 	public StochasticLabelledPetriNet importFromStream(PluginContext context, InputStream input, String filename,
 			long fileSizeInBytes) throws Exception {
+		return read(input);
+	}
+
+	public static StochasticLabelledPetriNetImpl read(InputStream input) throws NumberFormatException, IOException {
 
 		StochasticLabelledPetriNetImpl result = new StochasticLabelledPetriNetImpl();
 
@@ -67,7 +71,7 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 		return result;
 	}
 
-	public String getNextLine(BufferedReader r) throws IOException {
+	public static String getNextLine(BufferedReader r) throws IOException {
 		String line = r.readLine();
 		while (line != null && line.startsWith("#")) {
 			line = r.readLine();

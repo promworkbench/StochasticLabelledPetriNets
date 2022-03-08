@@ -29,7 +29,7 @@ public class CrossProductResultDot implements CrossProductResult {
 		}
 
 		dotNode.setOption("style", "filled");
-		dotNode.setOption("fillcolor", "#80ff00");
+		dotNode.setOption("fillcolor", "#E40000");
 	}
 
 	public void reportDeadState(int stateIndex) {
@@ -78,10 +78,14 @@ public class CrossProductResultDot implements CrossProductResult {
 
 		allNodes(dotNode);
 		dotNode.setOption("style", "filled");
-		dotNode.setOption("fillcolor", "#E40000");
+		dotNode.setOption("fillcolor", "#80ff00");
 	}
 
 	private static void allNodes(DotNode dotNode) {
 		dotNode.setOption("shape", "circle");
+	}
+
+	public Dot toDot() {
+		return dot;
 	}
 }

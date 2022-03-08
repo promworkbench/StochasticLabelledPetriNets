@@ -1,6 +1,7 @@
 package org.processmining.stochasticlabelledpetrinets.probability;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -32,6 +33,8 @@ public class CrossProductResultSolver implements CrossProductResult {
 		deadState = -1;
 		maxState = -1;
 		finalStates = new BitSet();
+		nextStates = new ArrayList<>();
+		nextStateProbabilities = new ArrayList<>();
 	}
 
 	public void reportInitialState(int stateIndex) {
@@ -92,30 +95,38 @@ public class CrossProductResultSolver implements CrossProductResult {
 	 * @throws LpSolveException
 	 */
 	public double solve(ProMCanceller canceller) throws LpSolveException {
-		LpSolve solver = LpSolve.makeLp(0, maxState);
+		LpSolve solver = LpSolve.makeLp(0, maxState + 1);
 
 		solver.setDebug(false);
 		solver.setVerbose(0);
 
-		solver.setObj(initialState, -1);
+		//set objective function
+		{
+			solver.setObj(initialState + 1, 1);
+		}
+
+		//set upper bounds
+		for (int stateIndex = 0; stateIndex <= maxState; stateIndex++) {
+			solver.setUpbo(stateIndex + 1, 1);
+		}
 
 		solver.setAddRowmode(true);
 
-		for (int stateIndex = 0; stateIndex < nextStates.size(); stateIndex++) {
+		for (int stateIndex = 0; stateIndex <= maxState; stateIndex++) {
 
 			if (stateIndex == deadState) {
 				//a dead state has a 0 probability to end up in a final state
-				int[] columns = new int[] { deadState };
+				int[] columns = new int[] { deadState + 1 };
 				double[] probabilities = new double[] { 1 };
 				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 0);
 			} else if (finalStates.get(stateIndex)) {
 				//a final state has a 1 probability to end up in a final state
-				int[] columns = new int[] { stateIndex };
+				int[] columns = new int[] { stateIndex + 1 };
 				double[] probabilities = new double[] { 1 };
 				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 1.0);
 			} else {
 				//any other state has a probability equal to the weighted sum of its next states, to end up in a final state
-				int[] columns = ArrayUtils.add(nextStates.get(stateIndex), stateIndex);
+				int[] columns = ArrayUtils.add(increment(nextStates.get(stateIndex)), stateIndex + 1);
 				double[] probabilities = ArrayUtils.add(nextStateProbabilities.get(stateIndex), -1);
 				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 0);
 			}
@@ -131,9 +142,20 @@ public class CrossProductResultSolver implements CrossProductResult {
 			return Double.NaN;
 		}
 
+		solver.printLp();
+
 		solver.solve();
+
+		//solver.printSolution(maxState + 1);
 
 		return solver.getObjective();
 	}
 
+	private static int[] increment(int[] array) {
+		int[] result = Arrays.copyOf(array, array.length);
+		for (int i = 0; i < result.length; i++) {
+			result[i]++;
+		}
+		return result;
+	}
 }

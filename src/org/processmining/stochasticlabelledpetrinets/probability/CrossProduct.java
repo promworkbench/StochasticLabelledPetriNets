@@ -21,8 +21,8 @@ public class CrossProduct {
 	protected static class ABState<B> {
 
 		public ABState(byte[] stateA, B stateB) {
-			this.stateA = null;
-			this.stateB = null;
+			this.stateA = stateA;
+			this.stateB = stateB;
 		}
 
 		final byte[] stateA;
@@ -61,7 +61,7 @@ public class CrossProduct {
 		TDoubleList outgoingStateProbabilities = new TDoubleArrayList();
 	}
 
-	public static <B> void traverse(StochasticLabelledPetriNet netA, FollowerSemantics<B> netB,
+	public static <B> void traverse(StochasticLabelledPetriNet netA, FollowerSemantics<B> systemB,
 			CrossProductResult result) {
 		Z<B> z = new Z<>();
 		Y y = new Y();
@@ -69,7 +69,7 @@ public class CrossProduct {
 
 		//initialise
 		{
-			ABState<B> state = new ABState<>(z.semantics.getState(), netB.getInitialState());
+			ABState<B> state = new ABState<>(z.semantics.getState(), systemB.getInitialState());
 			z.worklist.add(state);
 			z.seen.put(state, z.stateCounter);
 			result.reportInitialState(z.stateCounter);
@@ -80,6 +80,8 @@ public class CrossProduct {
 		z.stateCounter++;
 		result.reportDeadState(deadStateA);
 
+		BitSet enabledTransitions = new BitSet();
+
 		while (!z.worklist.isEmpty()) {
 			ABState<B> stateAB = z.worklist.pop();
 			int stateABindex = z.seen.get(stateAB);
@@ -87,11 +89,12 @@ public class CrossProduct {
 			z.semantics.setState(stateAB.stateA);
 
 			if (z.semantics.isFinalState()) {
-				if (netB.isFinalState(stateAB.stateB)) {
+				if (systemB.isFinalState(stateAB.stateB)) {
 					result.reportFinalState(stateABindex);
 				}
 			} else {
-				BitSet enabledTransitions = z.semantics.getEnabledTransitions();
+				enabledTransitions.clear();
+				enabledTransitions.or(z.semantics.getEnabledTransitions());
 				double totalWeight = z.semantics.getTotalWeightOfEnabledTransitions();
 
 				y.outgoingStates.clear();
@@ -102,6 +105,7 @@ public class CrossProduct {
 
 					z.semantics.setState(stateAB.stateA);
 					z.semantics.executeTransition(transition);
+
 					byte[] newStateA = z.semantics.getState();
 					if (z.semantics.isTransitionSilent(transition)) {
 						//silent transition; only A takes a step
@@ -110,7 +114,7 @@ public class CrossProduct {
 						processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B take steps
-						B newStateB = netB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
+						B newStateB = systemB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
 						if (newStateB != null) {
 							processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 						} else {
