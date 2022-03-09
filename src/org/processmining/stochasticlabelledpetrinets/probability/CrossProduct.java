@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Objects;
 
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsImpl;
 
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
@@ -61,11 +59,12 @@ public class CrossProduct {
 		TDoubleList outgoingStateProbabilities = new TDoubleArrayList();
 	}
 
-	public static <B> void traverse(StochasticLabelledPetriNet netA, FollowerSemantics<B> systemB,
+	public static <B> void traverse(StochasticLabelledPetriNetSemantics semanticsA, FollowerSemantics<B> systemB,
 			CrossProductResult result) {
 		Z<B> z = new Z<>();
 		Y y = new Y();
-		z.semantics = new StochasticLabelledPetriNetSemanticsImpl(netA);
+		z.semantics = semanticsA;
+		semanticsA.setInitialState();
 
 		//initialise
 		{
