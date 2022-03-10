@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import org.processmining.framework.plugin.ProMCanceller;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetImpl;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsImpl;
 import org.processmining.stochasticlabelledpetrinets.plugins.StochasticLabelledPetriNetImportPlugin;
 
 import lpsolve.LpSolveException;
@@ -16,6 +18,7 @@ public class TestTrace {
 			throws NumberFormatException, FileNotFoundException, IOException, LpSolveException {
 		StochasticLabelledPetriNetImpl netA = StochasticLabelledPetriNetImportPlugin.read(new FileInputStream(
 				new File("/home/sander/Documents/svn/51 - hybrid stochastic models - marco/PetriNet.slpn")));
+		StochasticLabelledPetriNetSemantics semanticsA = new StochasticLabelledPetriNetSemanticsImpl(netA);
 
 		String[] trace = new String[] { "a", "c" };
 		FollowerSemanticsTrace systemB = new FollowerSemanticsTrace(trace);
@@ -28,14 +31,15 @@ public class TestTrace {
 
 		{
 			CrossProductResultDot resultDot = new CrossProductResultDot();
-			CrossProduct.traverse(netA, systemB, resultDot, canceller);
+			CrossProduct.traverse(semanticsA, systemB, resultDot, canceller);
 
 			System.out.println(resultDot.toDot());
 		}
 
 		{
 			CrossProductResultSolver resultSolver = new CrossProductResultSolver();
-			CrossProduct.traverse(netA, systemB, resultSolver, canceller);
+
+			CrossProduct.traverse(semanticsA, systemB, resultSolver, canceller);
 
 			System.out.println(resultSolver.solve(canceller));
 		}

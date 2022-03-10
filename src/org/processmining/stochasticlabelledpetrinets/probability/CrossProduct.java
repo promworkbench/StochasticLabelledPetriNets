@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Objects;
 
+import org.processmining.framework.plugin.ProMCanceller;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
 
 import gnu.trove.list.TDoubleList;
@@ -60,7 +61,7 @@ public class CrossProduct {
 	}
 
 	public static <B> void traverse(StochasticLabelledPetriNetSemantics semanticsA, FollowerSemantics<B> systemB,
-			CrossProductResult result) {
+			CrossProductResult result, ProMCanceller canceller) {
 		Z<B> z = new Z<>();
 		Y y = new Y();
 		z.semantics = semanticsA;
@@ -125,6 +126,10 @@ public class CrossProduct {
 				}
 
 				result.reportNonFinalState(stateABindex, y.outgoingStates, y.outgoingStateProbabilities);
+			}
+
+			if (canceller.isCancelled()) {
+				return;
 			}
 		}
 	}
