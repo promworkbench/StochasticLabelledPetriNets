@@ -116,14 +116,10 @@ public class CrossProductResultSolver implements CrossProductResult {
 
 			if (stateIndex == deadState) {
 				//a dead state has a 0 probability to end up in a final state
-				int[] columns = new int[] { deadState + 1 };
-				double[] probabilities = new double[] { 1 };
-				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 0);
+				solver.setBounds(deadState + 1, 0, 0);
 			} else if (finalStates.get(stateIndex)) {
 				//a final state has a 1 probability to end up in a final state
-				int[] columns = new int[] { stateIndex + 1 };
-				double[] probabilities = new double[] { 1 };
-				solver.addConstraintex(columns.length, probabilities, columns, LpSolve.EQ, 1.0);
+				solver.setBounds(stateIndex + 1, 1, 1);
 			} else {
 				//any other state has a probability equal to the weighted sum of its next states, to end up in a final state
 				int[] columns = ArrayUtils.add(increment(nextStates.get(stateIndex)), stateIndex + 1);
