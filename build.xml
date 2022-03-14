@@ -8,7 +8,7 @@
 	<property name="dist" location="dist" />
 	<property name="release" location="latestrelease" />
 	<property name="version" value="${major_minor}.${env.BUILD_NUMBER}" />
-	<property name="project" value="NewPackageIvy" />
+	<property name="project" value="StochasticLabelledPetriNets" />
 
 	<property name="author" value="Sander Leemans, Fabrizio Maggi, and Marco Montali" />
 	<property name="organization" value="Queensland University of Technology" />
