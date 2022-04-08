@@ -12,6 +12,7 @@
         <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
     </listAttribute>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; javaProject=&quot;StochasticLabelledPetriNets&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#13;&#10;"/>
@@ -21,6 +22,6 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.processmining.contexts.uitopia.UI"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="StochasticLabelledPetriNets"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="StochasticLabelledPetriNets"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx4G -XX:MaxPermSize=256m -Djava.library.path=. -Djava.util.Arrays.useLegacyMergeSort=true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx4G -Djava.library.path=. -Djava.util.Arrays.useLegacyMergeSort=true"/>
     <stringAttribute key="yk-options" value="&#13;&#10;additional-options=&#13;&#10;snapshots-dir=&#13;&#10;"/>
 </launchConfiguration>
