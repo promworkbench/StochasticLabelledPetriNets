@@ -9,18 +9,18 @@ import org.processmining.contexts.uitopia.UIPluginContext;
 import org.processmining.contexts.uitopia.annotations.UIExportPlugin;
 import org.processmining.framework.plugin.annotations.Plugin;
 import org.processmining.framework.plugin.annotations.PluginVariant;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 
 @Plugin(name = "Stochastic labelled Petri net exporter", returnLabels = {}, returnTypes = {}, parameterLabels = {
 		"Inductive visual Miner alignment", "File" }, userAccessible = true)
 @UIExportPlugin(description = "Stochastic labelled Petri net", extension = "slpn")
 public class StochasticLabelledPetriNetExportPlugin {
 	@PluginVariant(variantLabel = "Dfg export (Directly follows graph)", requiredParameterLabels = { 0, 1 })
-	public void exportDefault(UIPluginContext context, StochasticLabelledPetriNet net, File file) throws IOException {
+	public void exportDefault(UIPluginContext context, StochasticLabelledPetriNetSimpleWeights net, File file) throws IOException {
 		export(net, file);
 	}
 
-	public static void export(StochasticLabelledPetriNet net, File file) throws IOException {
+	public static void export(StochasticLabelledPetriNetSimpleWeights net, File file) throws IOException {
 		PrintWriter w = null;
 		try {
 			w = new PrintWriter(file);

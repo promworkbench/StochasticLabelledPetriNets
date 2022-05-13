@@ -17,14 +17,14 @@ import org.python.bouncycastle.util.Arrays;
  */
 public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
 
-	private final StochasticLabelledPetriNet net;
+	private final StochasticLabelledPetriNetSimpleWeights net;
 	private byte[] state;
 	private byte[] cacheState;
 	private BitSet enabledTransitions;
 	private BitSet cacheTransition;
 	private int numberOfEnabledTransitions;
 
-	public StochasticLabelledPetriNetSemanticsImpl(StochasticLabelledPetriNet net) {
+	public StochasticLabelledPetriNetSemanticsImpl(StochasticLabelledPetriNetSimpleWeights net) {
 		this.net = net;
 		state = new byte[net.getNumberOfPlaces()];
 		cacheState = new byte[net.getNumberOfPlaces()];

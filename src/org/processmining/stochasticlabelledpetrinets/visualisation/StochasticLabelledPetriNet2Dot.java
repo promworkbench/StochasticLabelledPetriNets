@@ -2,13 +2,13 @@ package org.processmining.stochasticlabelledpetrinets.visualisation;
 
 import org.processmining.plugins.graphviz.dot.Dot;
 import org.processmining.plugins.graphviz.dot.DotNode;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 
 public class StochasticLabelledPetriNet2Dot {
-	public static Dot toDot(StochasticLabelledPetriNet net) {
+	public static Dot toDot(StochasticLabelledPetriNetSimpleWeights net) {
 		Dot dot = new Dot();
 
 		TIntObjectMap<DotNode> place2dotNode = new TIntObjectHashMap<>(10, 0.5f, -1);

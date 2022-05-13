@@ -12,7 +12,7 @@ import org.processmining.framework.plugin.annotations.PluginVariant;
 import org.processmining.plugins.InductiveMiner.plugins.dialogs.IMMiningDialog;
 import org.processmining.plugins.graphviz.dot.Dot;
 import org.processmining.plugins.graphviz.visualisation.DotPanel;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 import org.processmining.stochasticlabelledpetrinets.visualisation.StochasticLabelledPetriNet2Dot;
 
 public class StochasticLabelledPetriNetVisualisationPlugin {
@@ -22,7 +22,7 @@ public class StochasticLabelledPetriNetVisualisationPlugin {
 	@Visualizer
 	@UITopiaVariant(affiliation = IMMiningDialog.affiliation, author = IMMiningDialog.author, email = IMMiningDialog.email)
 	@PluginVariant(variantLabel = "Stochastic labelled Petri net visualisation", requiredParameterLabels = { 0, 1 })
-	public JComponent visualise(final PluginContext context, StochasticLabelledPetriNet net, ProMCanceller canceller) {
+	public JComponent visualise(final PluginContext context, StochasticLabelledPetriNetSimpleWeights net, ProMCanceller canceller) {
 		Dot dot = StochasticLabelledPetriNet2Dot.toDot(net);
 		return new DotPanel(dot);
 	}

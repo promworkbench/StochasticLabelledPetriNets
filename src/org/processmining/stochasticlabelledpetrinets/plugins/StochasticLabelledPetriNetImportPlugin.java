@@ -9,14 +9,14 @@ import org.processmining.contexts.uitopia.annotations.UIImportPlugin;
 import org.processmining.framework.abstractplugins.AbstractImportPlugin;
 import org.processmining.framework.plugin.PluginContext;
 import org.processmining.framework.plugin.annotations.Plugin;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNet;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetImpl;
 
 @Plugin(name = "Stochastic labelled Petri net", parameterLabels = { "Filename" }, returnLabels = {
-		"Stochastic labelled Petri net" }, returnTypes = { StochasticLabelledPetriNet.class })
+		"Stochastic labelled Petri net" }, returnTypes = { StochasticLabelledPetriNetSimpleWeights.class })
 @UIImportPlugin(description = "Stochastic labelled Petri net files", extensions = { "slpn" })
 public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin {
-	public StochasticLabelledPetriNet importFromStream(PluginContext context, InputStream input, String filename,
+	public StochasticLabelledPetriNetSimpleWeights importFromStream(PluginContext context, InputStream input, String filename,
 			long fileSizeInBytes) throws Exception {
 		return read(input);
 	}
