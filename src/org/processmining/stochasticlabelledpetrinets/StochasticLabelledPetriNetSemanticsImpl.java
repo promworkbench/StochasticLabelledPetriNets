@@ -17,14 +17,14 @@ import org.python.bouncycastle.util.Arrays;
  */
 public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
 
-	private final StochasticLabelledPetriNetSimpleWeights net;
+	private final StochasticLabelledPetriNet net;
 	private byte[] state;
 	private byte[] cacheState;
-	private BitSet enabledTransitions;
+	protected BitSet enabledTransitions;
 	private BitSet cacheTransition;
-	private int numberOfEnabledTransitions;
+	protected int numberOfEnabledTransitions;
 
-	public StochasticLabelledPetriNetSemanticsImpl(StochasticLabelledPetriNetSimpleWeights net) {
+	public StochasticLabelledPetriNetSemanticsImpl(StochasticLabelledPetriNet net) {
 		this.net = net;
 		state = new byte[net.getNumberOfPlaces()];
 		cacheState = new byte[net.getNumberOfPlaces()];
@@ -107,15 +107,6 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 		return numberOfEnabledTransitions == 0;
 	}
 
-	public double getTotalWeightOfEnabledTransitions() {
-		double result = 0;
-		for (int transition = enabledTransitions.nextSetBit(0); transition >= 0; transition = enabledTransitions
-				.nextSetBit(transition + 1)) {
-			result += net.getTransitionWeight(transition);
-		}
-		return result;
-	}
-
 	public byte[] getState() {
 		return Arrays.clone(state);
 	}
@@ -143,10 +134,6 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 				}
 			}
 		}
-	}
-
-	public double getTransitionWeight(int transition) {
-		return net.getTransitionWeight(transition);
 	}
 
 	public boolean isTransitionSilent(int transition) {

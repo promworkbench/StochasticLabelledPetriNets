@@ -6,7 +6,7 @@ import java.util.BitSet;
 import java.util.Objects;
 
 import org.processmining.framework.plugin.ProMCanceller;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsSimpleWeights;
 
 import gnu.trove.list.TDoubleList;
 import gnu.trove.list.TIntList;
@@ -50,7 +50,7 @@ public class CrossProduct {
 
 	private static class Z<B> {
 		int stateCounter = 0;
-		StochasticLabelledPetriNetSemantics semantics;
+		StochasticLabelledPetriNetSemanticsSimpleWeights semantics;
 		TObjectIntMap<ABState<B>> seen = new TObjectIntHashMap<>(10, 0.5f, -1);
 		ArrayDeque<ABState<B>> worklist = new ArrayDeque<>();
 	}
@@ -60,7 +60,7 @@ public class CrossProduct {
 		TDoubleList outgoingStateProbabilities = new TDoubleArrayList();
 	}
 
-	public static <B> void traverse(StochasticLabelledPetriNetSemantics semanticsA, FollowerSemantics<B> systemB,
+	public static <B> void traverse(StochasticLabelledPetriNetSemanticsSimpleWeights semanticsA, FollowerSemantics<B> systemB,
 			CrossProductResult result, ProMCanceller canceller) {
 		Z<B> z = new Z<>();
 		Y y = new Y();

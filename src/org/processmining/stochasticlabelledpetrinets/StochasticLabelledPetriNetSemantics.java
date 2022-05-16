@@ -53,20 +53,6 @@ public interface StochasticLabelledPetriNetSemantics {
 
 	/**
 	 * 
-	 * @param enabledTransitions
-	 * @return the sum of the weight of the enabled transitions
-	 */
-	public double getTotalWeightOfEnabledTransitions();
-
-	/**
-	 * 
-	 * @param transition
-	 * @return the weight of the transition
-	 */
-	public double getTransitionWeight(int transition);
-
-	/**
-	 * 
 	 * @param transition
 	 * @return whether the given transition is silent
 	 */
