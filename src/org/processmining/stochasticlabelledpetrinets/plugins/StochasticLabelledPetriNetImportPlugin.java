@@ -10,7 +10,7 @@ import org.processmining.framework.abstractplugins.AbstractImportPlugin;
 import org.processmining.framework.plugin.PluginContext;
 import org.processmining.framework.plugin.annotations.Plugin;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetImpl;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeightsImpl;
 
 @Plugin(name = "Stochastic labelled Petri net", parameterLabels = { "Filename" }, returnLabels = {
 		"Stochastic labelled Petri net" }, returnTypes = { StochasticLabelledPetriNetSimpleWeights.class })
@@ -21,9 +21,9 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 		return read(input);
 	}
 
-	public static StochasticLabelledPetriNetImpl read(InputStream input) throws NumberFormatException, IOException {
+	public static StochasticLabelledPetriNetSimpleWeightsImpl read(InputStream input) throws NumberFormatException, IOException {
 
-		StochasticLabelledPetriNetImpl result = new StochasticLabelledPetriNetImpl();
+		StochasticLabelledPetriNetSimpleWeightsImpl result = new StochasticLabelledPetriNetSimpleWeightsImpl();
 
 		BufferedReader r = new BufferedReader(new InputStreamReader(input));
 

@@ -6,14 +6,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
 public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNetEditable {
 
 	private ArrayList<String> transitionLabels;
-	private TDoubleArrayList transitionWeights;
 	private TIntIntMap initialMarking;
 	private List<int[]> inputPlaces = new ArrayList<>();
 	private List<int[]> outputPlaces = new ArrayList<>();
@@ -22,14 +20,13 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 
 	public StochasticLabelledPetriNetImpl() {
 		transitionLabels = new ArrayList<>();
-		transitionWeights = new TDoubleArrayList();
 		initialMarking = new TIntIntHashMap(10, 0.5f, -1, 0);
 		inputPlaces = new ArrayList<>();
 		outputPlaces = new ArrayList<>();
 	}
 
 	public int getNumberOfTransitions() {
-		return transitionWeights.size();
+		return transitionLabels.size();
 	}
 
 	public int getNumberOfPlaces() {
@@ -42,10 +39,6 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 
 	public boolean isTransitionSilent(int transition) {
 		return transitionLabels.get(transition) == null;
-	}
-
-	public double getTransitionWeight(int transition) {
-		return transitionWeights.get(transition);
 	}
 
 	public int isInInitialMarking(int place) {
@@ -76,16 +69,11 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 		transitionLabels.set(transition, null);
 	}
 
-	public void setTransitionWeight(int transition, double weight) {
-		transitionWeights.set(transition, weight);
-	}
-
 	public int addTransition(String label, double weight) {
 		inputPlaces.add(new int[0]);
 		outputPlaces.add(new int[0]);
 		transitionLabels.add(label);
-		transitionWeights.add(weight);
-		return transitionWeights.size() - 1;
+		return transitionLabels.size() - 1;
 	}
 
 	public int addTransition(double weight) {

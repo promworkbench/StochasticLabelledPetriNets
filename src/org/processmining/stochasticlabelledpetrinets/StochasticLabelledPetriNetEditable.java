@@ -1,11 +1,9 @@
 package org.processmining.stochasticlabelledpetrinets;
 
-public interface StochasticLabelledPetriNetEditable extends StochasticLabelledPetriNetSimpleWeights {
+public interface StochasticLabelledPetriNetEditable extends StochasticLabelledPetriNet {
 	public void setTransitionLabel(int transition, String label);
 
 	public void makeTransitionSilent(int transition);
-
-	public void setTransitionWeight(int transition, double weight);
 
 	/**
 	 * Add a labelled transition.
