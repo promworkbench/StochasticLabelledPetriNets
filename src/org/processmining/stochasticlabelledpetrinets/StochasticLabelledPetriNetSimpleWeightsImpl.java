@@ -28,4 +28,9 @@ public class StochasticLabelledPetriNetSimpleWeightsImpl extends StochasticLabel
 		return transitionWeights.get(transition);
 	}
 
+	@Override
+	public StochasticLabelledPetriNetSemantics getDefaultSemantics() {
+		return new StochasticLabelledPetriNetSemanticsSimpleWeightsImpl(this);
+	}
+
 }

@@ -73,4 +73,13 @@ public interface StochasticLabelledPetriNet {
 	 *         array.
 	 */
 	public int[] getOutputTransitions(int place);
+
+	/**
+	 * 
+	 * @return an object that allows for a standardised interpretation of the
+	 *         language of the net. The returned object might not be thread safe
+	 *         and the implementer must ensure a new, fresh, object is returned
+	 *         for each call.
+	 */
+	public StochasticLabelledPetriNetSemantics getDefaultSemantics();
 }
