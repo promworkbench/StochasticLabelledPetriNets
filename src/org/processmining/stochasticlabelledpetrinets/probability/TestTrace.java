@@ -6,9 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.processmining.framework.plugin.ProMCanceller;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeightsImpl;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsSimpleWeights;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsSimpleWeightsImpl;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeightsImpl;
 import org.processmining.stochasticlabelledpetrinets.plugins.StochasticLabelledPetriNetImportPlugin;
 
 import lpsolve.LpSolveException;
@@ -18,7 +18,7 @@ public class TestTrace {
 			throws NumberFormatException, FileNotFoundException, IOException, LpSolveException {
 		StochasticLabelledPetriNetSimpleWeightsImpl netA = StochasticLabelledPetriNetImportPlugin.read(new FileInputStream(
 				new File("/home/sander/Documents/svn/51 - hybrid stochastic models - marco/PetriNet.slpn")));
-		StochasticLabelledPetriNetSemanticsSimpleWeights semanticsA = new StochasticLabelledPetriNetSemanticsSimpleWeightsImpl(netA);
+		StochasticLabelledPetriNetSemantics semanticsA = new StochasticLabelledPetriNetSemanticsSimpleWeightsImpl(netA);
 
 		String[] trace = new String[] { "a", "c" };
 		FollowerSemanticsTrace systemB = new FollowerSemanticsTrace(trace);
