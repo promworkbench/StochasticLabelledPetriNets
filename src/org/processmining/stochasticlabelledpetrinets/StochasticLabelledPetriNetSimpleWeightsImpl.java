@@ -3,7 +3,7 @@ package org.processmining.stochasticlabelledpetrinets;
 import gnu.trove.list.array.TDoubleArrayList;
 
 public class StochasticLabelledPetriNetSimpleWeightsImpl extends StochasticLabelledPetriNetImpl
-		implements StochasticLabelledPetriNetSimpleWeights {
+		implements StochasticLabelledPetriNetSimpleWeightsEditable {
 
 	private TDoubleArrayList transitionWeights;
 
@@ -11,6 +11,7 @@ public class StochasticLabelledPetriNetSimpleWeightsImpl extends StochasticLabel
 		transitionWeights = new TDoubleArrayList();
 	}
 
+	@Override
 	public void setTransitionWeight(int transition, double weight) {
 		transitionWeights.set(transition, weight);
 	}
@@ -22,6 +23,7 @@ public class StochasticLabelledPetriNetSimpleWeightsImpl extends StochasticLabel
 		return transitionWeights.size() - 1;
 	}
 
+	@Override
 	public double getTransitionWeight(int transition) {
 		return transitionWeights.get(transition);
 	}

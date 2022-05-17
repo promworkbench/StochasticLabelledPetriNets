@@ -11,8 +11,7 @@ package org.processmining.stochasticlabelledpetrinets;
  * @author sander
  *
  */
-public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends StochasticLabelledPetriNetSemanticsImpl
-		implements StochasticLabelledPetriNetSemanticsSimpleWeights {
+public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends StochasticLabelledPetriNetSemanticsImpl {
 
 	private final StochasticLabelledPetriNetSimpleWeights net;
 
@@ -21,10 +20,12 @@ public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends Stocha
 		this.net = net;
 	}
 
+	@Override
 	public double getTransitionWeight(int transition) {
 		return net.getTransitionWeight(transition);
 	}
 
+	@Override
 	public double getTotalWeightOfEnabledTransitions() {
 		double result = 0;
 		for (int transition = enabledTransitions.nextSetBit(0); transition >= 0; transition = enabledTransitions

@@ -66,4 +66,18 @@ public interface StochasticLabelledPetriNetSemantics {
 	 * @return the label of the transition.
 	 */
 	public String getTransitionLabel(int transition);
+
+	/**
+	 * 
+	 * @param transition
+	 * @return the weight of the transition. This might depend on the state.
+	 */
+	public double getTransitionWeight(int transition);
+
+	/**
+	 * 
+	 * @param enabledTransitions
+	 * @return the sum of the weight of the enabled transitions
+	 */
+	public double getTotalWeightOfEnabledTransitions();
 }

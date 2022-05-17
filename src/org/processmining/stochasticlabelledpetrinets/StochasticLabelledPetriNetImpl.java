@@ -25,50 +25,62 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 		outputPlaces = new ArrayList<>();
 	}
 
+	@Override
 	public int getNumberOfTransitions() {
 		return transitionLabels.size();
 	}
 
+	@Override
 	public int getNumberOfPlaces() {
 		return inputTransitions.size();
 	}
 
+	@Override
 	public String getTransitionLabel(int transition) {
 		return transitionLabels.get(transition);
 	}
 
+	@Override
 	public boolean isTransitionSilent(int transition) {
 		return transitionLabels.get(transition) == null;
 	}
 
+	@Override
 	public int isInInitialMarking(int place) {
 		return initialMarking.get(place);
 	}
 
+	@Override
 	public int[] getInputPlaces(int transition) {
 		return inputPlaces.get(transition);
 	}
 
+	@Override
 	public int[] getOutputPlaces(int transition) {
 		return outputPlaces.get(transition);
 	}
 
+	@Override
 	public int[] getInputTransitions(int place) {
 		return inputTransitions.get(place);
 	}
 
+	@Override
 	public int[] getOutputTransitions(int place) {
 		return outputTransitions.get(place);
 	}
 
+	@Override
 	public void setTransitionLabel(int transition, String label) {
 		transitionLabels.set(transition, label);
 	}
 
+	@Override
 	public void makeTransitionSilent(int transition) {
 		transitionLabels.set(transition, null);
 	}
 
+	@Override
 	public int addTransition(String label, double weight) {
 		inputPlaces.add(new int[0]);
 		outputPlaces.add(new int[0]);
@@ -76,28 +88,34 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 		return transitionLabels.size() - 1;
 	}
 
+	@Override
 	public int addTransition(double weight) {
 		return addTransition(null, weight);
 	}
 
+	@Override
 	public int addPlace() {
 		inputTransitions.add(new int[0]);
 		outputTransitions.add(new int[0]);
 		return inputTransitions.size() - 1;
 	}
 
+	@Override
 	public void addPlaceToInitialMarking(int place, int cardinality) {
 		initialMarking.adjustOrPutValue(place, cardinality, cardinality);
 	}
 
+	@Override
 	public void addPlaceToInitialMarking(int place) {
 		addPlaceToInitialMarking(place, 1);
 	}
 
+	@Override
 	public void addPlaceTransitionArc(int place, int transition) {
 		addPlaceTransitionArc(place, transition, 1);
 	}
 
+	@Override
 	public void addPlaceTransitionArc(int place, int transition, int cardinality) {
 		int[] xOutputTransitions = outputTransitions.get(place);
 		int[] xInputPlaces = inputPlaces.get(transition);
@@ -123,10 +141,12 @@ public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNe
 		inputPlaces.set(transition, xInputPlaces);
 	}
 
+	@Override
 	public void addTransitionPlaceArc(int transition, int place) {
 		addTransitionPlaceArc(transition, place, 1);
 	}
 
+	@Override
 	public void addTransitionPlaceArc(int transition, int place, int cardinality) {
 		int[] xOutputPlaces = outputPlaces.get(transition);
 		int[] xInputTransitions = inputTransitions.get(place);

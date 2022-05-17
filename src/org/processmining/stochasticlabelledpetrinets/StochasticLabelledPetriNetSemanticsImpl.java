@@ -15,7 +15,7 @@ import org.python.bouncycastle.util.Arrays;
  * @author sander
  *
  */
-public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
+public abstract class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
 
 	private final StochasticLabelledPetriNet net;
 	private byte[] state;
@@ -33,6 +33,7 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 		setInitialState();
 	}
 
+	@Override
 	public void setInitialState() {
 		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
 			state[place] = (byte) net.isInInitialMarking(place);
@@ -40,6 +41,7 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 		computeEnabledTransitions();
 	}
 
+	@Override
 	public void executeTransition(int transition) {
 		int[] inSet = net.getInputPlaces(transition);
 		for (int place : inSet) {
@@ -99,18 +101,22 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 		}
 	}
 
+	@Override
 	public BitSet getEnabledTransitions() {
 		return enabledTransitions;
 	}
 
+	@Override
 	public boolean isFinalState() {
 		return numberOfEnabledTransitions == 0;
 	}
 
+	@Override
 	public byte[] getState() {
 		return Arrays.clone(state);
 	}
 
+	@Override
 	public void setState(byte[] newState) {
 		byte[] oldState = this.state;
 		this.state = Arrays.clone(newState);
@@ -136,10 +142,12 @@ public class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabell
 		}
 	}
 
+	@Override
 	public boolean isTransitionSilent(int transition) {
 		return net.isTransitionSilent(transition);
 	}
 
+	@Override
 	public String getTransitionLabel(int transition) {
 		return net.getTransitionLabel(transition);
 	}
