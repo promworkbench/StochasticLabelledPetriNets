@@ -11,6 +11,8 @@ import java.util.BitSet;
  */
 public interface StochasticLabelledPetriNetSemantics {
 
+	public int getNumberOfTransitions();
+
 	/**
 	 * (Re)set the semantics to the initial state.
 	 */

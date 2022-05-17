@@ -34,6 +34,11 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 	}
 
 	@Override
+	public int getNumberOfTransitions() {
+		return net.getNumberOfTransitions();
+	}
+
+	@Override
 	public void setInitialState() {
 		enabledTransitions.clear();
 		numberOfEnabledTransitions = 0;
