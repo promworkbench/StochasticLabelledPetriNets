@@ -35,6 +35,8 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 
 	@Override
 	public void setInitialState() {
+		enabledTransitions.clear();
+		numberOfEnabledTransitions = 0;
 		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
 			state[place] = (byte) net.isInInitialMarking(place);
 		}
