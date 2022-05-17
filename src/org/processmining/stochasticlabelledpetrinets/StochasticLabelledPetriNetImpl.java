@@ -9,7 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import gnu.trove.map.TIntIntMap;
 import gnu.trove.map.hash.TIntIntHashMap;
 
-public class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNetEditable {
+public abstract class StochasticLabelledPetriNetImpl implements StochasticLabelledPetriNetEditable {
 
 	private ArrayList<String> transitionLabels;
 	private TIntIntMap initialMarking;
