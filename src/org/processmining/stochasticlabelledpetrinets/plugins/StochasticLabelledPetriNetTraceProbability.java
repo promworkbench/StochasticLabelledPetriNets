@@ -1,7 +1,7 @@
 package org.processmining.stochasticlabelledpetrinets.plugins;
 
 import org.processmining.framework.plugin.ProMCanceller;
-import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemanticsSimpleWeights;
+import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSemantics;
 import org.processmining.stochasticlabelledpetrinets.probability.CrossProduct;
 import org.processmining.stochasticlabelledpetrinets.probability.CrossProductResultSolver;
 import org.processmining.stochasticlabelledpetrinets.probability.FollowerSemanticsTrace;
@@ -9,7 +9,7 @@ import org.processmining.stochasticlabelledpetrinets.probability.FollowerSemanti
 import lpsolve.LpSolveException;
 
 public class StochasticLabelledPetriNetTraceProbability {
-	public static double getTraceProbability(StochasticLabelledPetriNetSemanticsSimpleWeights semantics, String[] trace,
+	public static double getTraceProbability(StochasticLabelledPetriNetSemantics semantics, String[] trace,
 			ProMCanceller canceller) throws LpSolveException {
 		semantics.setInitialState();
 
