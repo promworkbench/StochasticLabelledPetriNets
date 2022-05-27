@@ -13,7 +13,7 @@ package org.processmining.stochasticlabelledpetrinets;
  */
 public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends StochasticLabelledPetriNetSemanticsImpl {
 
-	private final StochasticLabelledPetriNetSimpleWeights net;
+	private StochasticLabelledPetriNetSimpleWeights net;
 
 	public StochasticLabelledPetriNetSemanticsSimpleWeightsImpl(StochasticLabelledPetriNetSimpleWeights net) {
 		super(net);
@@ -35,4 +35,12 @@ public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends Stocha
 		return result;
 	}
 
+	@Override
+	public StochasticLabelledPetriNetSemanticsSimpleWeightsImpl clone() throws CloneNotSupportedException {
+		StochasticLabelledPetriNetSemanticsSimpleWeightsImpl result = (StochasticLabelledPetriNetSemanticsSimpleWeightsImpl) super.clone();
+
+		result.net = net;
+
+		return result;
+	}
 }

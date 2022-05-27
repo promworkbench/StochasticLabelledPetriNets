@@ -158,4 +158,17 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 	public String getTransitionLabel(int transition) {
 		return net.getTransitionLabel(transition);
 	}
+
+	@Override
+	protected StochasticLabelledPetriNetSemanticsImpl clone() throws CloneNotSupportedException {
+		StochasticLabelledPetriNetSemanticsImpl result = (StochasticLabelledPetriNetSemanticsImpl) super.clone();
+
+		result.cacheState = Arrays.clone(cacheState);
+		result.cacheTransition = (BitSet) cacheTransition.clone();
+		result.enabledTransitions = (BitSet) enabledTransitions.clone();
+		result.numberOfEnabledTransitions = numberOfEnabledTransitions;
+		result.state = Arrays.clone(state);
+
+		return result;
+	}
 }

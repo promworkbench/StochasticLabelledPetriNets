@@ -9,7 +9,7 @@ import java.util.BitSet;
  * @author sander
  *
  */
-public interface StochasticLabelledPetriNetSemantics {
+public interface StochasticLabelledPetriNetSemantics extends Cloneable {
 
 	public int getNumberOfTransitions();
 
