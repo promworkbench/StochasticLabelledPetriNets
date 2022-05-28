@@ -82,4 +82,6 @@ public interface StochasticLabelledPetriNetSemantics extends Cloneable {
 	 * @return the sum of the weight of the enabled transitions
 	 */
 	public double getTotalWeightOfEnabledTransitions();
+
+	public StochasticLabelledPetriNetSemantics clone();
 }

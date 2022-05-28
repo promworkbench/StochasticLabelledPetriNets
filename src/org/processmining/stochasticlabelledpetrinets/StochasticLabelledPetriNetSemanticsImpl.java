@@ -160,8 +160,13 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 	}
 
 	@Override
-	protected StochasticLabelledPetriNetSemanticsImpl clone() throws CloneNotSupportedException {
-		StochasticLabelledPetriNetSemanticsImpl result = (StochasticLabelledPetriNetSemanticsImpl) super.clone();
+	public StochasticLabelledPetriNetSemanticsImpl clone() {
+		StochasticLabelledPetriNetSemanticsImpl result;
+		try {
+			result = (StochasticLabelledPetriNetSemanticsImpl) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null;
+		}
 
 		result.cacheState = Arrays.clone(cacheState);
 		result.cacheTransition = (BitSet) cacheTransition.clone();

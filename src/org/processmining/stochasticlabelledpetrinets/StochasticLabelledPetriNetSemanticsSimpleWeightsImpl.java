@@ -36,7 +36,7 @@ public class StochasticLabelledPetriNetSemanticsSimpleWeightsImpl extends Stocha
 	}
 
 	@Override
-	public StochasticLabelledPetriNetSemanticsSimpleWeightsImpl clone() throws CloneNotSupportedException {
+	public StochasticLabelledPetriNetSemanticsSimpleWeightsImpl clone() {
 		StochasticLabelledPetriNetSemanticsSimpleWeightsImpl result = (StochasticLabelledPetriNetSemanticsSimpleWeightsImpl) super.clone();
 
 		result.net = net;
