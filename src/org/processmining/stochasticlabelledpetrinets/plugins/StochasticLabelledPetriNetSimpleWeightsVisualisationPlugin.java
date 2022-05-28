@@ -14,7 +14,7 @@ import org.processmining.plugins.graphviz.dot.DotNode;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 
 public class StochasticLabelledPetriNetSimpleWeightsVisualisationPlugin
-		extends StochasticLabelledPetriNetVisualisationPlugin {
+		extends StochasticLabelledPetriNetVisualisationPlugin<StochasticLabelledPetriNetSimpleWeights> {
 	@Plugin(name = "Stochastic labelled Petri net (simple weights) visualisation", returnLabels = {
 			"Dot visualization" }, returnTypes = { JComponent.class }, parameterLabels = {
 					"stochastic labelled Petri net", "canceller" }, userAccessible = true, level = PluginLevel.Regular)
@@ -27,18 +27,11 @@ public class StochasticLabelledPetriNetSimpleWeightsVisualisationPlugin
 	}
 
 	public void decoratePlace(StochasticLabelledPetriNetSimpleWeights net, int place, DotNode dotNode) {
-		dotNode.setOption("width", "0.2");
-		dotNode.setOption("shape", "circle");
+
 	}
 
 	public void decorateTransition(StochasticLabelledPetriNetSimpleWeights net, int transition, DotNode dotNode) {
-		dotNode.setOption("shape", "box");
-
-		if (net.isTransitionSilent(transition)) {
-			dotNode.setOption("style", "rounded,filled");
-		} else {
-			dotNode.setOption("style", "rounded");
-		}
+		dotNode.setOption("xlabel", net.getTransitionWeight(transition) + "");
 	}
 
 }
