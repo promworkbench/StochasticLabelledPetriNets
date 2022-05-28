@@ -1,30 +1,54 @@
 package org.processmining.stochasticlabelledpetrinets.plugins;
 
-import javax.swing.JComponent;
-
-import org.processmining.contexts.uitopia.annotations.UITopiaVariant;
-import org.processmining.contexts.uitopia.annotations.Visualizer;
-import org.processmining.framework.plugin.PluginContext;
-import org.processmining.framework.plugin.ProMCanceller;
-import org.processmining.framework.plugin.annotations.Plugin;
-import org.processmining.framework.plugin.annotations.PluginLevel;
-import org.processmining.framework.plugin.annotations.PluginVariant;
-import org.processmining.plugins.InductiveMiner.plugins.dialogs.IMMiningDialog;
 import org.processmining.plugins.graphviz.dot.Dot;
+import org.processmining.plugins.graphviz.dot.DotNode;
 import org.processmining.plugins.graphviz.visualisation.DotPanel;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 import org.processmining.stochasticlabelledpetrinets.visualisation.StochasticLabelledPetriNet2Dot;
 
-public class StochasticLabelledPetriNetVisualisationPlugin {
-	@Plugin(name = "Stochastic labelled Petri net visualisation", returnLabels = {
-			"Dot visualization" }, returnTypes = { JComponent.class }, parameterLabels = {
-					"stochastic labelled Petri net", "canceller" }, userAccessible = true, level = PluginLevel.Regular)
-	@Visualizer
-	@UITopiaVariant(affiliation = IMMiningDialog.affiliation, author = IMMiningDialog.author, email = IMMiningDialog.email)
-	@PluginVariant(variantLabel = "Stochastic labelled Petri net visualisation", requiredParameterLabels = { 0, 1 })
-	public JComponent visualise(final PluginContext context, StochasticLabelledPetriNetSimpleWeights net, ProMCanceller canceller) {
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+
+public abstract class StochasticLabelledPetriNetVisualisationPlugin {
+
+	public DotPanel visualise(StochasticLabelledPetriNetSimpleWeights net) {
 		Dot dot = StochasticLabelledPetriNet2Dot.toDot(net);
+
+		TIntObjectMap<DotNode> place2node = new TIntObjectHashMap<>();
+
+		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
+			DotNode dotNode = dot.addNode("");
+
+			place2node.put(place, dotNode);
+
+			decoratePlace(net, place, dotNode);
+		}
+
+		for (int transition = 0; transition < net.getNumberOfTransitions(); transition++) {
+			DotNode dotNode;
+			if (net.isTransitionSilent(transition)) {
+				dotNode = dot.addNode("");
+			} else {
+				dotNode = dot.addNode(net.getTransitionLabel(transition));
+			}
+
+			for (int place : net.getOutputPlaces(transition)) {
+				dot.addEdge(dotNode, place2node.get(place));
+			}
+
+			for (int place : net.getInputPlaces(transition)) {
+				dot.addEdge(place2node.get(place), dotNode);
+			}
+
+			decorateTransition(net, transition, dotNode);
+		}
+
 		return new DotPanel(dot);
 	}
+
+	public abstract void decoratePlace(StochasticLabelledPetriNetSimpleWeights net, int place, DotNode dotNode);
+
+	public abstract void decorateTransition(StochasticLabelledPetriNetSimpleWeights net, int transition,
+			DotNode dotNode);
 
 }
