@@ -12,6 +12,8 @@ public abstract class StochasticLabelledPetriNetVisualisationPlugin<N extends St
 
 	public DotPanel visualise(N net) {
 		Dot dot = new Dot();
+		
+		dot.setOption("forcelabels", "true");
 
 		TIntObjectMap<DotNode> place2dotNode = new TIntObjectHashMap<>(10, 0.5f, -1);
 
