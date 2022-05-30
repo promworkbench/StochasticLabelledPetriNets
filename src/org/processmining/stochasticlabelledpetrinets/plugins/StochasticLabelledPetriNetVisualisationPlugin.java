@@ -16,7 +16,7 @@ public abstract class StochasticLabelledPetriNetVisualisationPlugin<N extends St
 		TIntObjectMap<DotNode> place2dotNode = new TIntObjectHashMap<>(10, 0.5f, -1);
 
 		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
-			DotNode dotNode = dot.addNode("(" + place + ")");
+			DotNode dotNode = dot.addNode("");
 			dotNode.setOption("shape", "circle");
 			place2dotNode.put(place, dotNode);
 
