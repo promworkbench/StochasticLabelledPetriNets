@@ -12,7 +12,7 @@ public abstract class StochasticLabelledPetriNetVisualisationPlugin<N extends St
 
 	public DotPanel visualise(N net) {
 		Dot dot = new Dot();
-		
+
 		dot.setOption("forcelabels", "true");
 
 		TIntObjectMap<DotNode> place2dotNode = new TIntObjectHashMap<>(10, 0.5f, -1);
@@ -34,7 +34,7 @@ public abstract class StochasticLabelledPetriNetVisualisationPlugin<N extends St
 			DotNode dotNode;
 
 			if (net.isTransitionSilent(transition)) {
-				dotNode = dot.addNode("");
+				dotNode = dot.addNode("" + transition);
 				dotNode.setOption("style", "filled");
 				dotNode.setOption("fillcolor", "gray");
 			} else {
