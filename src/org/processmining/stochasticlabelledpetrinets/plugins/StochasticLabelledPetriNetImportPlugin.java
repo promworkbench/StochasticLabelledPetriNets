@@ -67,6 +67,8 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 				}
 			}
 		}
+		
+		r.close();
 
 		return result;
 	}
