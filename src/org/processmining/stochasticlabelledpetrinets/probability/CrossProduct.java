@@ -103,6 +103,14 @@ public class CrossProduct {
 					//B is not ready; report this as a dead end
 					result.reportNonFinalState(stateABindex, nextStates, nextProbabilities);
 				}
+			} else if (systemB.isFinalState(stateAB.stateB)) {
+				//B is done but we are not in a final state; report that this is a dead end
+				TIntList nextStates = new TIntArrayList();
+				nextStates.add(deadStateA);
+				TDoubleList nextProbabilities = new TDoubleArrayList();
+				nextProbabilities.add(1);
+				//B is not ready; report this as a dead end
+				result.reportNonFinalState(stateABindex, nextStates, nextProbabilities);
 			} else {
 				enabledTransitions.clear();
 				enabledTransitions.or(z.semantics.getEnabledTransitions());
