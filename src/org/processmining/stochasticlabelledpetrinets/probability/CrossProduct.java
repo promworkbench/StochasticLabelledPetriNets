@@ -46,6 +46,10 @@ public class CrossProduct {
 			ABState<B> other = (ABState<B>) obj;
 			return Arrays.equals(stateA, other.stateA) && Objects.equals(stateB, other.stateB);
 		}
+
+		public String toString() {
+			return Arrays.toString(stateA) + "-" + stateB.toString();
+		}
 	}
 
 	private static class Z<B> {
@@ -91,6 +95,13 @@ public class CrossProduct {
 			if (z.semantics.isFinalState()) {
 				if (systemB.isFinalState(stateAB.stateB)) {
 					result.reportFinalState(stateABindex);
+				} else {
+					TIntList nextStates = new TIntArrayList();
+					nextStates.add(deadStateA);
+					TDoubleList nextProbabilities = new TDoubleArrayList();
+					nextProbabilities.add(1);
+					//B is not ready; report this as a dead end
+					result.reportNonFinalState(stateABindex, nextStates, nextProbabilities);
 				}
 			} else {
 				enabledTransitions.clear();

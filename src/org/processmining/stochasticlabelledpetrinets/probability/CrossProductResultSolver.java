@@ -39,9 +39,11 @@ public class CrossProductResultSolver implements CrossProductResult {
 
 	public void reportInitialState(int stateIndex) {
 		initialState = stateIndex;
+		System.out.println(" report initial state " + stateIndex);
 	}
 
 	public void reportNonFinalState(int stateIndex, TIntList nextStateIndices, TDoubleList nextStateProbabilities) {
+		System.out.println(" report non-final state " + stateIndex);
 		maxState = Math.max(maxState, stateIndex);
 		deDuplicate(nextStateIndices, nextStateProbabilities);
 
@@ -55,6 +57,7 @@ public class CrossProductResultSolver implements CrossProductResult {
 	}
 
 	public void reportFinalState(int stateIndex) {
+		System.out.println(" report final state " + stateIndex);
 		finalStates.set(stateIndex);
 		maxState = Math.max(maxState, stateIndex);
 	}

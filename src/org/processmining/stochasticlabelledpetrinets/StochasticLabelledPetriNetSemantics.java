@@ -28,9 +28,8 @@ public interface StochasticLabelledPetriNetSemantics extends Cloneable {
 	/**
 	 * 
 	 * @param state
-	 * @return an array of indices of the transitions that are enabled. The
-	 *         implementation might require that this array is not changed by
-	 *         the caller.
+	 * @return an array of indices of the transitions that are enabled. May be
+	 *         changed and stored by the caller.
 	 */
 	public BitSet getEnabledTransitions();
 

@@ -17,7 +17,7 @@ import org.python.bouncycastle.util.Arrays;
  */
 public abstract class StochasticLabelledPetriNetSemanticsImpl implements StochasticLabelledPetriNetSemantics {
 
-	private final StochasticLabelledPetriNet net;
+	private StochasticLabelledPetriNet net;
 	private byte[] state;
 	private byte[] cacheState;
 	protected BitSet enabledTransitions;
@@ -110,7 +110,7 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 
 	@Override
 	public BitSet getEnabledTransitions() {
-		return enabledTransitions;
+		return (BitSet) enabledTransitions.clone();
 	}
 
 	@Override
@@ -168,6 +168,7 @@ public abstract class StochasticLabelledPetriNetSemanticsImpl implements Stochas
 			return null;
 		}
 
+		result.net = net;
 		result.cacheState = Arrays.clone(cacheState);
 		result.cacheTransition = (BitSet) cacheTransition.clone();
 		result.enabledTransitions = (BitSet) enabledTransitions.clone();

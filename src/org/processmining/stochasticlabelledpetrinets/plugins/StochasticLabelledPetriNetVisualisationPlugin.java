@@ -36,7 +36,7 @@ public abstract class StochasticLabelledPetriNetVisualisationPlugin<N extends St
 			if (net.isTransitionSilent(transition)) {
 				dotNode = dot.addNode("" + transition);
 				dotNode.setOption("style", "filled");
-				dotNode.setOption("fillcolor", "gray");
+				dotNode.setOption("fillcolor", "#8EBAE5");
 			} else {
 				dotNode = dot.addNode(net.getTransitionLabel(transition));
 			}
