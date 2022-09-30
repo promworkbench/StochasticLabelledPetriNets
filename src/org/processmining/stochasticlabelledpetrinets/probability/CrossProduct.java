@@ -103,14 +103,6 @@ public class CrossProduct {
 					//B is not ready; report this as a dead end
 					result.reportNonFinalState(stateABindex, nextStates, nextProbabilities);
 				}
-			} else if (systemB.isFinalState(stateAB.stateB)) {
-				//B is done but we are not in a final state; report that this is a dead end
-				TIntList nextStates = new TIntArrayList();
-				nextStates.add(deadStateA);
-				TDoubleList nextProbabilities = new TDoubleArrayList();
-				nextProbabilities.add(1);
-				//B is not ready; report this as a dead end
-				result.reportNonFinalState(stateABindex, nextStates, nextProbabilities);
 			} else {
 				enabledTransitions.clear();
 				enabledTransitions.or(z.semantics.getEnabledTransitions());
@@ -132,14 +124,22 @@ public class CrossProduct {
 
 						processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
-						//labelled transition; both A and B take steps
-						B newStateB = systemB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
-						if (newStateB != null) {
-							processNewState(z, y, totalWeight, transition, newStateA, newStateB);
-						} else {
-							//dead state
+						//labelled transition; both A and B need to take steps
+						if (systemB.isFinalState(stateAB.stateB)) {
+							//B cannot take a further step, so this is a dead end
 							y.outgoingStates.add(deadStateA);
-							y.outgoingStateProbabilities.add(z.semantics.getTransitionWeight(transition) / totalWeight);
+							y.outgoingStateProbabilities
+									.add(z.semantics.getTransitionWeight(transition) / totalWeight);
+						} else {
+							B newStateB = systemB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
+							if (newStateB != null) {
+								processNewState(z, y, totalWeight, transition, newStateA, newStateB);
+							} else {
+								//dead state
+								y.outgoingStates.add(deadStateA);
+								y.outgoingStateProbabilities
+										.add(z.semantics.getTransitionWeight(transition) / totalWeight);
+							}
 						}
 					}
 				}

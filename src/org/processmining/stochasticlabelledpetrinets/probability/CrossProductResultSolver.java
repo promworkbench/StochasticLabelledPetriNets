@@ -95,6 +95,10 @@ public class CrossProductResultSolver implements CrossProductResult {
 	 * @throws LpSolveException
 	 */
 	public double solve(ProMCanceller canceller) throws LpSolveException {
+		if (finalStates.isEmpty()) {
+			return 0;
+		}
+		
 		LpSolve solver = LpSolve.makeLp(0, maxState + 1);
 
 		solver.setDebug(false);

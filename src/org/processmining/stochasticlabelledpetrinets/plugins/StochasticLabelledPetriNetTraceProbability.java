@@ -16,6 +16,12 @@ public class StochasticLabelledPetriNetTraceProbability {
 		CrossProductResultSolver result = new CrossProductResultSolver();
 		FollowerSemanticsTrace systemB = new FollowerSemanticsTrace(trace);
 		CrossProduct.traverse(semantics, systemB, result, canceller);
+		
+//		CrossProductResultDot result2 = new CrossProductResultDot();
+//		CrossProduct.traverse(semantics, systemB, result2, canceller);
+//		Dot dot = result2.toDot();
+//		System.out.println(dot);
+		
 		return result.solve(canceller);
 	}
 }
