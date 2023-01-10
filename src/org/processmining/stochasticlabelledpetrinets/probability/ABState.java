@@ -10,14 +10,14 @@ public class ABState<B> {
 		this.stateB = stateB;
 	}
 
-	final byte[] stateA;
-	final B stateB;
+	private final byte[] stateA;
+	private final B stateB;
 
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(stateA);
-		result = prime * result + Objects.hash(stateB);
+		result = prime * result + Arrays.hashCode(getStateA());
+		result = prime * result + Objects.hash(getStateB());
 		return result;
 	}
 
@@ -30,10 +30,18 @@ public class ABState<B> {
 			return false;
 		@SuppressWarnings("unchecked")
 		ABState<B> other = (ABState<B>) obj;
-		return Arrays.equals(stateA, other.stateA) && Objects.equals(stateB, other.stateB);
+		return Arrays.equals(getStateA(), other.getStateA()) && Objects.equals(getStateB(), other.getStateB());
 	}
 
 	public String toString() {
-		return Arrays.toString(stateA) + "-" + stateB.toString();
+		return Arrays.toString(getStateA()) + "-" + getStateB().toString();
+	}
+
+	public byte[] getStateA() {
+		return stateA;
+	}
+
+	public B getStateB() {
+		return stateB;
 	}
 }

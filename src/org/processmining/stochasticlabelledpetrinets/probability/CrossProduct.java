@@ -53,10 +53,10 @@ public class CrossProduct {
 			ABState<B> stateAB = z.worklist.pop();
 			int stateABindex = z.seen.get(stateAB);
 
-			z.semantics.setState(stateAB.stateA);
+			z.semantics.setState(stateAB.getStateA());
 
 			if (z.semantics.isFinalState()) {
-				if (systemB.isFinalState(stateAB.stateB)) {
+				if (systemB.isFinalState(stateAB.getStateB())) {
 					result.reportFinalState(stateABindex);
 				} else {
 					TIntList nextStates = new TIntArrayList();
@@ -77,24 +77,24 @@ public class CrossProduct {
 				for (int transition = enabledTransitions.nextSetBit(0); transition >= 0; transition = enabledTransitions
 						.nextSetBit(transition + 1)) {
 
-					z.semantics.setState(stateAB.stateA);
+					z.semantics.setState(stateAB.getStateA());
 					z.semantics.executeTransition(transition);
 
 					byte[] newStateA = z.semantics.getState();
 					if (z.semantics.isTransitionSilent(transition)) {
 						//silent transition; only A takes a step
-						B newStateB = stateAB.stateB;
+						B newStateB = stateAB.getStateB();
 
 						processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 					} else {
 						//labelled transition; both A and B need to take steps
-						if (systemB.isFinalState(stateAB.stateB)) {
+						if (systemB.isFinalState(stateAB.getStateB())) {
 							//B cannot take a further step, so this is a dead end
 							y.outgoingStates.add(deadStateA);
 							y.outgoingStateProbabilities
 									.add(z.semantics.getTransitionWeight(transition) / totalWeight);
 						} else {
-							B newStateB = systemB.takeStep(stateAB.stateB, z.semantics.getTransitionLabel(transition));
+							B newStateB = systemB.takeStep(stateAB.getStateB(), z.semantics.getTransitionLabel(transition));
 							if (newStateB != null) {
 								processNewState(z, y, totalWeight, transition, newStateA, newStateB);
 							} else {
