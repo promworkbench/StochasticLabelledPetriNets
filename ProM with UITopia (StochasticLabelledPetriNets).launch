@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
         <listEntry value="/StochasticLabelledPetriNets"/>
     </listAttribute>
@@ -22,6 +23,6 @@
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.processmining.contexts.uitopia.UI"/>
     <stringAttribute key="org.eclipse.jdt.launching.MODULE_NAME" value="StochasticLabelledPetriNets"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="StochasticLabelledPetriNets"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx4G -Djava.library.path=. -Djava.util.Arrays.useLegacyMergeSort=true -Djava.system.class.loader=org.processmining.framework.util.ProMClassLoader"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx4G -Djava.library.path=./lib/ux64 -Djava.util.Arrays.useLegacyMergeSort=true -Djava.system.class.loader=org.processmining.framework.util.ProMClassLoader"/>
     <stringAttribute key="yk-options" value="&#13;&#10;additional-options=&#13;&#10;snapshots-dir=&#13;&#10;"/>
 </launchConfiguration>

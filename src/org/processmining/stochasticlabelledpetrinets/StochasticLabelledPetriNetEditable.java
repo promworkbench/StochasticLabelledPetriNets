@@ -65,4 +65,11 @@ public interface StochasticLabelledPetriNetEditable extends StochasticLabelledPe
 	 *            May be negative.
 	 */
 	public void addTransitionPlaceArc(int transition, int place, int cardinality);
+
+	/**
+	 * 
+	 * @param transition
+	 * @param weight
+	 */
+	public void setTransitionWeight(int transition, double weight);
 }
