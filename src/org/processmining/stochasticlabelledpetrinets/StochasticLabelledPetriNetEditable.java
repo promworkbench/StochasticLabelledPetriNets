@@ -66,10 +66,11 @@ public interface StochasticLabelledPetriNetEditable extends StochasticLabelledPe
 	 */
 	public void addTransitionPlaceArc(int transition, int place, int cardinality);
 
+	// HV 20231109: COmmented out this method, as it should not be there according to the developer. 
 	/**
 	 * 
 	 * @param transition
 	 * @param weight
-	 */
 	public void setTransitionWeight(int transition, double weight);
+	 */
 }
