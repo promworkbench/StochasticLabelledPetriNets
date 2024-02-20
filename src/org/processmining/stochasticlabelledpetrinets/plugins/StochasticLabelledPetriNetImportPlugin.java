@@ -26,7 +26,7 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 		StochasticLabelledPetriNetSimpleWeightsImpl result = new StochasticLabelledPetriNetSimpleWeightsImpl();
 
 		BufferedReader r = new BufferedReader(new InputStreamReader(input));
-
+		getNextLine(r); //read the header
 		int numberOfPlaces = Integer.parseInt(getNextLine(r));
 		for (int place = 0; place < numberOfPlaces; place++) {
 			result.addPlace();

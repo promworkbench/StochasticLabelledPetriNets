@@ -24,6 +24,7 @@ public class StochasticLabelledPetriNetExportPlugin {
 		PrintWriter w = null;
 		try {
 			w = new PrintWriter(file);
+			w.println("stochastic labelled Petri net");
 			w.println("# number of places");
 			w.println(net.getNumberOfPlaces());
 
