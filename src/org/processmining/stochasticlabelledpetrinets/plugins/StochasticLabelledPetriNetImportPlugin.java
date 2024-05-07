@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 
+import org.apache.commons.math3.fraction.BigFraction;
 import org.processmining.contexts.uitopia.annotations.UIImportPlugin;
 import org.processmining.framework.abstractplugins.AbstractImportPlugin;
 import org.processmining.framework.plugin.PluginContext;
@@ -40,7 +42,7 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 		int numberOfTransitions = Integer.parseInt(getNextLine(r));
 		for (int transition = 0; transition < numberOfTransitions; transition++) {
 			String line = getNextLine(r);
-			double weight = Double.valueOf(getNextLine(r));
+			double weight = parseNumber(getNextLine(r));
 			if (line.startsWith("silent")) {
 				result.addTransition(weight);
 			} else if (line.startsWith("label ")) {
@@ -71,6 +73,24 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 		r.close();
 
 		return result;
+	}
+	
+	public static Double parseNumber(String string) {
+		if (Double.valueOf(string) == null) {
+			if (string.contains("/")) {
+				String[] arr = string.split("/");
+				if (arr.length != 2) {
+					return null;
+				}
+				
+				BigInteger a = new BigInteger(arr[0]);
+				BigInteger b = new BigInteger(arr[1]);
+				
+				BigFraction f = new BigFraction(a, b);
+				return f.doubleValue();
+			}
+		}
+		return Double.valueOf(string);
 	}
 
 	public static String getNextLine(BufferedReader r) throws IOException {
