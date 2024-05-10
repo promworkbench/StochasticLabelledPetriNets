@@ -14,6 +14,8 @@ import org.processmining.framework.plugin.annotations.Plugin;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeights;
 import org.processmining.stochasticlabelledpetrinets.StochasticLabelledPetriNetSimpleWeightsImpl;
 
+import com.google.common.primitives.Doubles;
+
 @Plugin(name = "Stochastic labelled Petri net", parameterLabels = { "Filename" }, returnLabels = {
 		"Stochastic labelled Petri net" }, returnTypes = { StochasticLabelledPetriNetSimpleWeights.class })
 @UIImportPlugin(description = "Stochastic labelled Petri net files", extensions = { "slpn" })
@@ -76,7 +78,7 @@ public class StochasticLabelledPetriNetImportPlugin extends AbstractImportPlugin
 	}
 	
 	public static Double parseNumber(String string) {
-		if (Double.valueOf(string) == null) {
+		if (Doubles.tryParse(string) == null) {
 			if (string.contains("/")) {
 				String[] arr = string.split("/");
 				if (arr.length != 2) {
