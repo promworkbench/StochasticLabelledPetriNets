@@ -63,4 +63,44 @@ public class StochasticLabelledPetriNetExportPlugin {
 			}
 		}
 	}
+	
+	public static StringBuilder export(StochasticLabelledPetriNetSimpleWeights net) {
+		StringBuilder w = new StringBuilder();
+		
+		w.append("stochastic labelled Petri net\n");
+		w.append("# number of places\\n");
+		w.append(net.getNumberOfPlaces() + "\n");
+
+		w.append("# initial marking\\n");
+		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
+			w.append(net.isInInitialMarking(place) + "\n");
+		}
+
+		w.append("# number of transitions\\n");
+		w.append(net.getNumberOfTransitions() + "\n");
+		for (int transition = 0; transition < net.getNumberOfTransitions(); transition++) {
+			w.append("# transition " + transition + "\n");
+			if (net.isTransitionSilent(transition)) {
+				w.append("silent\n");
+			} else {
+				w.append("label " + StringEscapeUtils.escapeJava(net.getTransitionLabel(transition)) + "\n");
+			}
+			w.append("# weight \n");
+			w.append(net.getTransitionWeight(transition) + "\n");
+
+			w.append("# number of input places\n");
+			w.append(net.getInputPlaces(transition).length + "\n");
+			for (int place : net.getInputPlaces(transition)) {
+				w.append(place + "\n");
+			}
+
+			w.append("# number of output places\n");
+			w.append(net.getOutputPlaces(transition).length + "\n");
+			for (int place : net.getOutputPlaces(transition)) {
+				w.append(place + "\n");
+			}
+		}
+		
+		return w;
+	}
 }
