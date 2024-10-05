@@ -71,12 +71,12 @@ public class StochasticLabelledPetriNetExportPlugin {
 		w.append("# number of places\\n");
 		w.append(net.getNumberOfPlaces() + "\n");
 
-		w.append("# initial marking\\n");
+		w.append("# initial marking\n");
 		for (int place = 0; place < net.getNumberOfPlaces(); place++) {
 			w.append(net.isInInitialMarking(place) + "\n");
 		}
 
-		w.append("# number of transitions\\n");
+		w.append("# number of transitions\n");
 		w.append(net.getNumberOfTransitions() + "\n");
 		for (int transition = 0; transition < net.getNumberOfTransitions(); transition++) {
 			w.append("# transition " + transition + "\n");
