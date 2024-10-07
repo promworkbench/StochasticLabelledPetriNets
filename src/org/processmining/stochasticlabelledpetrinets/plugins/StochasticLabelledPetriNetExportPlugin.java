@@ -68,7 +68,7 @@ public class StochasticLabelledPetriNetExportPlugin {
 		StringBuilder w = new StringBuilder();
 		
 		w.append("stochastic labelled Petri net\n");
-		w.append("# number of places\\n");
+		w.append("# number of places\n");
 		w.append(net.getNumberOfPlaces() + "\n");
 
 		w.append("# initial marking\n");
